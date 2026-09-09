@@ -1,0 +1,7 @@
+# Never pack your whole house into the lunchbox 🏷️ (lesson 08)
+# Everything listed here is invisible to COPY — smaller, safer, faster builds.
+node_modules
+*.log
+.git
+.env
+Dockerfile*

@@ -1,0 +1,15 @@
+# Multi-stage build 👨‍🍳→🍱 (lesson 07): cook in the big kitchen,
+# pack ONLY the food. Build tools never reach the final image.
+# Build:  docker build -f app/Dockerfile.multi -t hello-school:static app/
+# Run:    docker run --rm -p 8080:80 hello-school:static
+
+# ---- stage 1: the KITCHEN (has node, ~180MB — thrown away) ----
+FROM node:20-alpine AS builder
+WORKDIR /build
+COPY generate.js .
+RUN node generate.js > index.html          # the "build step"
+
+# ---- stage 2: the LUNCHBOX (nginx only, ~50MB — this is what ships) ----
+FROM nginx:alpine
+COPY --from=builder /build/index.html /usr/share/nginx/html/index.html
+# no node, no generate.js, no build tools — just the result 🎉

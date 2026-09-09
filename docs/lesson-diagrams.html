@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson diagrams — Learn Docker School</title>
+<meta name="description" content="All 12 lessons as numbered entity & sequence diagrams — images, layers, Dockerfiles, compose, multi-stage builds, registries and ECR — on one page.">
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --ink: #0f172a; --muted: #475569;
+    --line: #e2e8f0; --accent: #0ea5e9; --ok: #16a34a; --blue: #2563eb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1220; --card: #131c2e; --ink: #e2e8f0; --muted: #94a3b8; --line: #253349; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 28px 20px 60px; }
+  a { color: var(--blue); }
+  h1 { font-size: 1.9rem; line-height: 1.25; }
+  .sub { color: var(--muted); max-width: 74ch; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+  .toc a { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 12px; font-size: .82rem; color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--ink); border-color: var(--muted); }
+  .dsec { background: var(--card); border: 1px solid var(--line); border-top: 6px solid var(--c, var(--accent)); border-radius: 16px; padding: 22px 22px 16px; margin-top: 26px; scroll-margin-top: 16px; }
+  .dsec h2 { font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+  .dsec h2 .ln { flex: none; width: 32px; height: 32px; border-radius: 50%; background: var(--c, var(--accent)); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: .95rem; font-weight: 800; }
+  .dsec p.d { color: var(--muted); font-size: .95rem; margin: 6px 0 4px; }
+  .dsec svg { width: 100%; height: auto; display: block; margin-top: 10px; }
+  .dsec .foot { margin-top: 8px; font-size: .92rem; }
+  .box  { fill: var(--card); stroke: var(--c, var(--accent)); stroke-width: 2; }
+  .soft { fill: var(--bg);  stroke: var(--line); stroke-width: 1.5; }
+  .dead { fill: var(--bg);  stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .t  { font: 600 14px -apple-system, "Segoe UI", sans-serif; fill: var(--ink); }
+  .s  { font: 12px -apple-system, "Segoe UI", sans-serif; fill: var(--muted); }
+  .m  { text-anchor: middle; }
+  .arr  { stroke: #64748b; stroke-width: 2; fill: none; marker-end: url(#arw); }
+  .dash { stroke-dasharray: 6 5; }
+  .nc { fill: var(--c, var(--accent)); }
+  .nt { font: 700 12px -apple-system, sans-serif; fill: #fff; text-anchor: middle; }
+  footer { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: .88rem; }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs>
+  <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
+  </marker>
+</defs></svg>
+<div class="wrap">
+
+<header>
+  <p><a href="index.html">← Back to the course home</a></p>
+  <h1>📐 The 12 lessons as diagrams</h1>
+  <p class="sub">Part 1: Docker on your laptop (blue, lessons 1–8) · Part 2: registries &amp; ECR
+  (orange, lessons 9–12). Follow the circled numbers <b>1 → 2 → 3</b> in each picture.</p>
+  <nav class="toc">
+    <a href="#l01">1 Why containers</a><a href="#l02">2 Layers</a><a href="#l03">3 Dockerfile</a>
+    <a href="#l04">4 Run</a><a href="#l05">5 Volumes/nets</a><a href="#l06">6 Compose</a>
+    <a href="#l07">7 Multi-stage</a><a href="#l08">8 Hygiene</a><a href="#l09">9 Registries</a>
+    <a href="#l10">10 ECR setup</a><a href="#l11">11 Push/lifecycle</a><a href="#l12">12 CI to cloud</a>
+  </nav>
+</header>
+
+<!-- 01 -->
+<section class="dsec" id="l01" style="--c:#0ea5e9">
+  <h2><span class="ln">1</span> 🍱 Why containers — the end of "works on my machine"</h2>
+  <p class="d">Pack the app WITH everything it needs; every machine opens the identical box.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="A naked app breaks on other machines; packed as a container it runs identically everywhere">
+    <rect class="dead" x="40" y="50" width="260" height="100" rx="12"/>
+    <text class="t m" x="170" y="85">🧑‍💻 your laptop: works!</text>
+    <text class="s m" x="170" y="110">node 20 installed, all libs there</text>
+    <rect class="dead" x="40" y="180" width="260" height="100" rx="12"/>
+    <text class="t m" x="170" y="215">💥 teammate's laptop: crash</text>
+    <text class="s m" x="170" y="240">node 14, missing libs, wrong path</text>
+    <g transform="translate(320,165)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <text class="s m" x="320" y="200">the naked-app problem</text>
+    <rect class="box" x="400" y="90" width="240" height="150" rx="14"/>
+    <text class="t m" x="520" y="122">🍱 the container</text>
+    <text class="s m" x="520" y="148">app + node 20 + libs + config</text>
+    <text class="s m" x="520" y="170">everything INSIDE the box</text>
+    <text class="s m" x="520" y="196">(shares the host's kernel —</text>
+    <text class="s m" x="520" y="216">way lighter than a VM)</text>
+    <g transform="translate(400,90)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="box" x="720" y="40" width="180" height="70" rx="10"/>
+    <text class="s m" x="810" y="70">💻 laptop A ✅</text>
+    <rect class="box" x="720" y="125" width="180" height="70" rx="10"/>
+    <text class="s m" x="810" y="155">💻 laptop B ✅</text>
+    <rect class="box" x="720" y="210" width="180" height="70" rx="10"/>
+    <text class="s m" x="810" y="240">☁️ AWS server ✅</text>
+    <line class="arr" x1="640" y1="135" x2="716" y2="80"/>
+    <line class="arr" x1="640" y1="165" x2="716" y2="160"/>
+    <line class="arr" x1="640" y1="195" x2="716" y2="240"/>
+    <g transform="translate(678,140)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <text class="s m" x="678" y="280">identical, everywhere</text>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">Read full lesson 01 →</a></p>
+</section>
+
+<!-- 02 -->
+<section class="dsec" id="l02" style="--c:#0ea5e9">
+  <h2><span class="ln">2</span> 🎂 Images &amp; layers — the cake and the cache</h2>
+  <p class="d">Every Dockerfile line bakes one layer; unchanged layers are reused from cache.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Dockerfile lines become stacked layers; changing the top layer reuses all cached layers below">
+    <rect class="box" x="60" y="40" width="300" height="230" rx="14"/>
+    <text class="t m" x="210" y="70">🎂 image = a layer cake</text>
+    <rect class="soft" x="85" y="210" width="250" height="40" rx="8"/>
+    <text class="s m" x="210" y="235">FROM node:20-alpine (pre-baked)</text>
+    <rect class="soft" x="85" y="165" width="250" height="40" rx="8"/>
+    <text class="s m" x="210" y="190">WORKDIR /app</text>
+    <rect class="soft" x="85" y="120" width="250" height="40" rx="8"/>
+    <text class="s m" x="210" y="145">COPY server.js .</text>
+    <rect class="soft" x="85" y="75" width="250" height="40" rx="8"/>
+    <text class="s m" x="210" y="100">CMD ["node","server.js"]</text>
+    <g transform="translate(60,40)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="450" y="40" width="200" height="120" rx="12"/>
+    <text class="t m" x="550" y="75">🔁 build again,</text>
+    <text class="t m" x="550" y="98">nothing changed</text>
+    <text class="s m" x="550" y="128">every layer from cache</text>
+    <text class="s m" x="550" y="146">→ finishes in ~1 second</text>
+    <g transform="translate(450,40)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="box" x="450" y="180" width="200" height="100" rx="12"/>
+    <text class="t m" x="550" y="212">✏️ edit server.js</text>
+    <text class="s m" x="550" y="238">bottom layers: cached ✅</text>
+    <text class="s m" x="550" y="258">COPY + above: rebuilt 🔨</text>
+    <g transform="translate(450,180)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <rect class="soft" x="710" y="90" width="200" height="130" rx="12"/>
+    <text class="t m" x="810" y="122">💡 the trick</text>
+    <text class="s m" x="810" y="148">order lines from</text>
+    <text class="s m" x="810" y="168">rarely-changing (bottom)</text>
+    <text class="s m" x="810" y="188">to often-changing (top)</text>
+    <text class="s m" x="810" y="208">= fast builds forever</text>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">Read full lesson 02 →</a></p>
+</section>
+
+<!-- 03 -->
+<section class="dsec" id="l03" style="--c:#0ea5e9">
+  <h2><span class="ln">3</span> 📝 The Dockerfile — reading the recipe card line by line</h2>
+  <p class="d">Seven instructions cover 95% of real Dockerfiles — this repo's app uses them all.</p>
+  <svg viewBox="0 0 940 330" role="img" aria-label="Each Dockerfile instruction annotated: FROM base, WORKDIR, COPY code in, ENV defaults, EXPOSE docs, USER non-root, CMD on open">
+    <rect class="box" x="50" y="40" width="340" height="260" rx="14"/>
+    <text class="t m" x="220" y="70">📝 app/Dockerfile</text>
+    <text class="s" x="80" y="100">FROM node:20-alpine</text>
+    <text class="s" x="80" y="128">WORKDIR /app</text>
+    <text class="s" x="80" y="156">COPY server.js .</text>
+    <text class="s" x="80" y="184">ENV PORT=3000</text>
+    <text class="s" x="80" y="212">EXPOSE 3000</text>
+    <text class="s" x="80" y="240">USER node</text>
+    <text class="s" x="80" y="268">CMD ["node","server.js"]</text>
+    <rect class="soft" x="480" y="40" width="410" height="55" rx="10"/>
+    <text class="s" x="500" y="63">1️⃣ start from a pre-baked box: tiny Linux + Node</text>
+    <text class="s" x="500" y="83">— you never install Node yourself again</text>
+    <rect class="soft" x="480" y="105" width="410" height="50" rx="10"/>
+    <text class="s" x="500" y="128">2️⃣ COPY puts YOUR code inside the box</text>
+    <text class="s" x="500" y="148">(.dockerignore decides what may enter)</text>
+    <rect class="soft" x="480" y="165" width="410" height="50" rx="10"/>
+    <text class="s" x="500" y="188">3️⃣ ENV = default settings · EXPOSE = documentation</text>
+    <text class="s" x="500" y="208">("this app listens on 3000")</text>
+    <rect class="soft" x="480" y="225" width="410" height="75" rx="10"/>
+    <text class="s" x="500" y="248">4️⃣ USER: don't run as root (lesson 08) · CMD: what</text>
+    <text class="s" x="500" y="268">happens when the box is opened — exactly ONE</text>
+    <text class="s" x="500" y="288">process per container, in the foreground</text>
+    <line class="arr" x1="390" y1="96" x2="476" y2="68"/>
+    <line class="arr" x1="390" y1="152" x2="476" y2="130"/>
+    <line class="arr" x1="390" y1="200" x2="476" y2="190"/>
+    <line class="arr" x1="390" y1="255" x2="476" y2="260"/>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">Read full lesson 03 →</a></p>
+</section>
+
+<!-- 04 -->
+<section class="dsec" id="l04" style="--c:#0ea5e9">
+  <h2><span class="ln">4</span> 🍽️ Running containers — lunch time</h2>
+  <p class="d">docker run opens the box; ports are the serving window; logs and exec are your eyes and hands.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="docker run creates a container from the image; port mapping connects laptop port to container port; logs, exec and stop manage it">
+    <rect class="box" x="40" y="110" width="180" height="90" rx="12"/>
+    <text class="t m" x="130" y="145">🧊 image</text>
+    <text class="s m" x="130" y="167">hello-school:v1</text>
+    <rect class="box" x="330" y="80" width="300" height="150" rx="14"/>
+    <text class="t m" x="480" y="112">🏃 container</text>
+    <text class="s m" x="480" y="138">node server.js (PID 1)</text>
+    <text class="s m" x="480" y="160">own filesystem, own network</text>
+    <rect class="soft" x="355" y="175" width="250" height="40" rx="8"/>
+    <text class="s m" x="480" y="200">-e APP_VERSION=v2 → settings in</text>
+    <line class="arr" x1="220" y1="155" x2="326" y2="155"/>
+    <g transform="translate(273,138)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <text class="s m" x="273" y="185">docker run</text>
+    <rect class="box" x="720" y="80" width="190" height="80" rx="12"/>
+    <text class="t m" x="815" y="110">🪟 -p 3000:3000</text>
+    <text class="s m" x="815" y="135">laptop:3000 → box:3000</text>
+    <line class="arr" x1="630" y1="120" x2="716" y2="120"/>
+    <g transform="translate(673,103)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="soft" x="330" y="250" width="140" height="40" rx="8"/>
+    <text class="s m" x="400" y="275">📜 docker logs</text>
+    <rect class="soft" x="490" y="250" width="140" height="40" rx="8"/>
+    <text class="s m" x="560" y="275">🔧 docker exec</text>
+    <g transform="translate(310,270)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <rect class="soft" x="650" y="250" width="260" height="40" rx="8"/>
+    <text class="s m" x="780" y="275">🛑 docker stop → SIGTERM, clean exit</text>
+    <g transform="translate(650,250)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">Read full lesson 04 →</a></p>
+</section>
+
+<!-- 05 -->
+<section class="dsec" id="l05" style="--c:#0ea5e9">
+  <h2><span class="ln">5</span> 🧊📞 Volumes &amp; networks — the shared fridge and the intercom</h2>
+  <p class="d">Containers are disposable; volumes make data survive. Networks let containers call each other by NAME.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Two containers on one network talk by name; a volume outside the containers keeps data when they are removed">
+    <rect class="soft" x="40" y="50" width="560" height="200" rx="14"/>
+    <text class="t m" x="320" y="80">📞 docker network — the intercom</text>
+    <rect class="box" x="70" y="100" width="220" height="110" rx="12"/>
+    <text class="t m" x="180" y="135">📦 container "web"</text>
+    <text class="s m" x="180" y="160">the app</text>
+    <rect class="box" x="330" y="100" width="220" height="110" rx="12"/>
+    <text class="t m" x="440" y="135">📦 container "proxy"</text>
+    <text class="s m" x="440" y="160">calls http://web:3000</text>
+    <line class="arr" x1="330" y1="155" x2="294" y2="155"/>
+    <g transform="translate(312,135)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <text class="s m" x="320" y="235">a NAME, not an IP — Docker DNS resolves it (k8s Services say hi 👋)</text>
+    <rect class="box" x="660" y="60" width="240" height="100" rx="12"/>
+    <text class="t m" x="780" y="92">🧊 volume — the fridge</text>
+    <text class="s m" x="780" y="115">lives OUTSIDE containers,</text>
+    <text class="s m" x="780" y="135">survives docker rm 💪</text>
+    <g transform="translate(660,60)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="box" x="660" y="180" width="240" height="90" rx="12"/>
+    <text class="t m" x="780" y="210">📂 bind mount</text>
+    <text class="s m" x="780" y="233">a laptop folder mapped in —</text>
+    <text class="s m" x="780" y="253">live-edit code &amp; config</text>
+    <g transform="translate(660,180)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">Read full lesson 05 →</a></p>
+</section>
+
+<!-- 06 -->
+<section class="dsec" id="l06" style="--c:#0ea5e9">
+  <h2><span class="ln">6</span> 🍽️🍽️ Docker Compose — set the whole table with one command</h2>
+  <p class="d">One YAML file describes every service; docker compose up builds and starts them all, wired together.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="compose.yml declares web and proxy; compose up creates both on a shared network with only the proxy exposed">
+    <rect class="box" x="40" y="80" width="230" height="140" rx="12"/>
+    <text class="t m" x="155" y="112">📄 compose.yml</text>
+    <text class="s m" x="155" y="138">web: build ./app</text>
+    <text class="s m" x="155" y="160">proxy: nginx + config</text>
+    <text class="s m" x="155" y="182">ports: 8080:80</text>
+    <g transform="translate(40,80)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="soft" x="360" y="50" width="550" height="210" rx="14"/>
+    <text class="t m" x="635" y="80">🍽️ the table — one shared network</text>
+    <rect class="box" x="390" y="100" width="220" height="110" rx="12"/>
+    <text class="t m" x="500" y="132">📦 web</text>
+    <text class="s m" x="500" y="155">the app · NOT exposed</text>
+    <text class="s m" x="500" y="177">reachable only by name</text>
+    <rect class="box" x="650" y="100" width="230" height="110" rx="12"/>
+    <text class="t m" x="765" y="132">📦 proxy</text>
+    <text class="s m" x="765" y="155">nginx → http://web:3000</text>
+    <text class="s m" x="765" y="177">🪟 the ONLY door: :8080</text>
+    <line class="arr" x1="650" y1="155" x2="614" y2="155"/>
+    <g transform="translate(632,135)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <line class="arr" x1="270" y1="150" x2="356" y2="150"/>
+    <g transform="translate(313,133)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <text class="s m" x="313" y="180">compose up --build</text>
+    <text class="s m" x="635" y="240">one command up · one command down (docker compose down) · same file works on every teammate's laptop</text>
+    <g transform="translate(360,260)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">Read full lesson 06 →</a></p>
+</section>
+
+<!-- 07 -->
+<section class="dsec" id="l07" style="--c:#0ea5e9">
+  <h2><span class="ln">7</span> 👨‍🍳 Multi-stage builds — cook in the kitchen, pack only the food</h2>
+  <p class="d">Build tools live in a throwaway stage; only the result ships. Images shrink dramatically.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="A builder stage with all tools produces artifacts; only those are copied into a small final image; the kitchen is discarded">
+    <rect class="dead" x="50" y="60" width="330" height="180" rx="14"/>
+    <text class="t m" x="215" y="92">👨‍🍳 stage 1: the KITCHEN</text>
+    <text class="s m" x="215" y="118">FROM node:20-alpine AS builder</text>
+    <text class="s m" x="215" y="140">node + tools + source (~180MB)</text>
+    <rect class="soft" x="80" y="160" width="270" height="45" rx="8"/>
+    <text class="s m" x="215" y="188">RUN node generate.js → index.html</text>
+    <text class="s m" x="215" y="228">🗑️ thrown away after the build</text>
+    <g transform="translate(50,60)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="520" y="60" width="330" height="180" rx="14"/>
+    <text class="t m" x="685" y="92">🍱 stage 2: the LUNCHBOX</text>
+    <text class="s m" x="685" y="118">FROM nginx:alpine (~50MB)</text>
+    <rect class="soft" x="550" y="135" width="270" height="45" rx="8"/>
+    <text class="s m" x="685" y="163">COPY --from=builder index.html</text>
+    <text class="s m" x="685" y="205">no node, no tools, no source —</text>
+    <text class="s m" x="685" y="225">just the result. THIS ships. 🚀</text>
+    <g transform="translate(520,60)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <line class="arr" x1="380" y1="150" x2="516" y2="150"/>
+    <g transform="translate(448,133)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <text class="s m" x="448" y="180">only the food crosses</text>
+    <text class="s m" x="470" y="280">smaller image = faster pushes/pulls (lesson 11), fewer things to attack (lesson 08)</text>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">Read full lesson 07 →</a></p>
+</section>
+
+<!-- 08 -->
+<section class="dsec" id="l08" style="--c:#0ea5e9">
+  <h2><span class="ln">8</span> 🏷️ Image hygiene — label your boxes, don't pack your keys</h2>
+  <p class="d">The four habits that separate hobby images from production images.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Four hygiene rules: real tags not latest, dockerignore, non-root user, small base images">
+    <rect class="box" x="50" y="50" width="410" height="100" rx="12"/>
+    <text class="t m" x="255" y="82">🏷️ 1 · real tags, never :latest in prod</text>
+    <text class="s m" x="255" y="108">hello-school:v1 / :git-sha — ":latest" is a</text>
+    <text class="s m" x="255" y="128">floating label; you can't roll back to "latest"</text>
+    <g transform="translate(50,50)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="490" y="50" width="410" height="100" rx="12"/>
+    <text class="t m" x="695" y="82">🙈 2 · .dockerignore everything private</text>
+    <text class="s m" x="695" y="108">.git, .env, node_modules, logs — COPY can't</text>
+    <text class="s m" x="695" y="128">leak what it cannot see</text>
+    <g transform="translate(490,50)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="box" x="50" y="170" width="410" height="100" rx="12"/>
+    <text class="t m" x="255" y="202">👤 3 · USER node — never run as root</text>
+    <text class="s m" x="255" y="228">a break-in to a root container is a break-in</text>
+    <text class="s m" x="255" y="248">to the machine; drop privileges in the image</text>
+    <g transform="translate(50,170)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <rect class="box" x="490" y="170" width="410" height="100" rx="12"/>
+    <text class="t m" x="695" y="202">🪶 4 · small base images (alpine/slim)</text>
+    <text class="s m" x="695" y="228">node:20 ≈ 1.1GB vs node:20-alpine ≈ 180MB —</text>
+    <text class="s m" x="695" y="248">less to pull, less to patch, less to attack</text>
+    <g transform="translate(490,170)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">Read full lesson 08 →</a></p>
+</section>
+
+<!-- 09 -->
+<section class="dsec" id="l09" style="--c:#ea580c">
+  <h2><span class="ln">9</span> 🏬 Registries — the frozen-lunchbox warehouse</h2>
+  <p class="d">A registry stores images so OTHER machines can pull them — the bridge from laptop to cloud.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Laptop pushes an image to a registry repository; servers and clusters pull it; tags name versions, digests fingerprint them">
+    <rect class="box" x="40" y="110" width="200" height="90" rx="12"/>
+    <text class="t m" x="140" y="145">🧑‍💻 your laptop</text>
+    <text class="s m" x="140" y="167">image built locally</text>
+    <rect class="box" x="340" y="60" width="300" height="190" rx="14"/>
+    <text class="t m" x="490" y="92">🏬 registry — the warehouse</text>
+    <rect class="soft" x="365" y="110" width="250" height="55" rx="8"/>
+    <text class="s m" x="490" y="133">📚 repository: hello-school</text>
+    <text class="s m" x="490" y="153">shelf for ONE app's versions</text>
+    <rect class="soft" x="365" y="175" width="250" height="55" rx="8"/>
+    <text class="s m" x="490" y="198">🏷️ tags: v1, v2, abc123…</text>
+    <text class="s m" x="490" y="218">🔢 digest = tamper-proof fingerprint</text>
+    <line class="arr" x1="240" y1="155" x2="336" y2="155"/>
+    <g transform="translate(288,138)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <text class="s m" x="288" y="185">docker push</text>
+    <rect class="box" x="740" y="60" width="170" height="70" rx="12"/>
+    <text class="s m" x="825" y="90">☸️ EKS cluster</text>
+    <text class="s m" x="825" y="110">pulls at deploy</text>
+    <rect class="box" x="740" y="150" width="170" height="70" rx="12"/>
+    <text class="s m" x="825" y="180">💻 teammate</text>
+    <text class="s m" x="825" y="200">docker pull</text>
+    <line class="arr" x1="640" y1="130" x2="736" y2="95"/>
+    <line class="arr" x1="640" y1="180" x2="736" y2="185"/>
+    <g transform="translate(688,140)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <text class="s m" x="475" y="285">Docker Hub = the public warehouse · ECR = your company's private one (next lesson)</text>
+    <g transform="translate(150,285)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">Read full lesson 09 →</a></p>
+</section>
+
+<!-- 10 -->
+<section class="dsec" id="l10" style="--c:#ea580c">
+  <h2><span class="ln">10</span> 🏦 ECR setup — renting the bank locker</h2>
+  <p class="d">Create a private repository once; get a fresh 12-hour pass whenever you visit.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Terraform or the CLI creates the ECR repository; get-login-password issues a 12-hour token used by docker login">
+    <rect class="box" x="40" y="60" width="240" height="100" rx="12"/>
+    <text class="t m" x="160" y="92">🏗️ rent the locker (once)</text>
+    <text class="s m" x="160" y="115">terraform apply (ecr/ecr.tf)</text>
+    <text class="s m" x="160" y="137">or: aws ecr create-repository</text>
+    <g transform="translate(40,60)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="380" y="40" width="520" height="140" rx="14"/>
+    <text class="t m" x="640" y="72">☁️ AWS — ECR</text>
+    <rect class="soft" x="410" y="90" width="460" height="70" rx="10"/>
+    <text class="s m" x="640" y="118">🔐 repository: hello-school (private)</text>
+    <text class="s m" x="640" y="140">address: ACCOUNT.dkr.ecr.REGION.amazonaws.com/hello-school</text>
+    <line class="arr" x1="280" y1="110" x2="376" y2="110"/>
+    <rect class="box" x="40" y="190" width="240" height="90" rx="12"/>
+    <text class="t m" x="160" y="220">🎫 the 12-hour day pass</text>
+    <text class="s m" x="160" y="243">aws ecr get-login-password</text>
+    <text class="s m" x="160" y="263">| docker login …</text>
+    <g transform="translate(40,190)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <line class="arr" x1="280" y1="230" x2="440" y2="185"/>
+    <g transform="translate(360,222)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <text class="s m" x="380" y="260">now docker push/pull may enter</text>
+    <text class="s m" x="640" y="230">🔑 who may enter at all = IAM (your AWS user/role</text>
+    <text class="s m" x="640" y="252">needs ecr:* permissions — the bank checks ID first)</text>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">Read full lesson 10 →</a></p>
+</section>
+
+<!-- 11 -->
+<section class="dsec" id="l11" style="--c:#ea580c">
+  <h2><span class="ln">11</span> 🧹 Push, pull &amp; lifecycle — filing boxes and the janitor</h2>
+  <p class="d">The tag IS the address; push files the box, EKS pulls it, the janitor keeps the locker tidy.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Tag the local image with the full ECR address, push it, the cluster pulls it, and a lifecycle policy expires old images">
+    <rect class="box" x="40" y="50" width="260" height="90" rx="12"/>
+    <text class="t m" x="170" y="80">🏷️ address the box</text>
+    <text class="s m" x="170" y="102">docker tag hello-school:v1 \</text>
+    <text class="s m" x="170" y="122">ACCOUNT.dkr…/hello-school:v1</text>
+    <g transform="translate(40,50)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="400" y="50" width="240" height="200" rx="14"/>
+    <text class="t m" x="520" y="82">🏦 ECR locker</text>
+    <rect class="soft" x="425" y="100" width="190" height="40" rx="8"/>
+    <text class="s m" x="520" y="125">📦 v3 (newest)</text>
+    <rect class="soft" x="425" y="150" width="190" height="40" rx="8"/>
+    <text class="s m" x="520" y="175">📦 v2</text>
+    <rect class="dead" x="425" y="200" width="190" height="40" rx="8"/>
+    <text class="s m" x="520" y="225">📦 v-old… expired 🧹</text>
+    <line class="arr" x1="300" y1="95" x2="396" y2="95"/>
+    <g transform="translate(348,78)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <text class="s m" x="348" y="125">docker push</text>
+    <rect class="box" x="720" y="60" width="190" height="90" rx="12"/>
+    <text class="t m" x="815" y="92">☸️ EKS deployment</text>
+    <text class="s m" x="815" y="114">image: ACCOUNT.dkr…/</text>
+    <text class="s m" x="815" y="134">hello-school:v3 → pulled</text>
+    <line class="arr" x1="640" y1="105" x2="716" y2="105"/>
+    <g transform="translate(678,88)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <rect class="soft" x="700" y="180" width="210" height="90" rx="12"/>
+    <text class="t m" x="805" y="210">🧹 lifecycle policy</text>
+    <text class="s m" x="805" y="233">"keep newest 10, expire rest"</text>
+    <text class="s m" x="805" y="253">(ecr/lifecycle-policy.json)</text>
+    <line class="arr dash" x1="700" y1="225" x2="619" y2="222"/>
+    <g transform="translate(660,205)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">Read full lesson 11 →</a></p>
+</section>
+
+<!-- 12 -->
+<section class="dsec" id="l12" style="--c:#ea580c">
+  <h2><span class="ln">12</span> 📮 CI to cloud — the courier files the copies</h2>
+  <p class="d">In real life a robot does lessons 1–11 on every push — and hands the baton to the next two courses.</p>
+  <svg viewBox="0 0 940 300" role="img" aria-label="Dev pushes; CI tests, builds, tags with the commit SHA, pushes to ECR where images are scanned; Kubernetes deploys them; ArgoCD automates the deploys">
+    <rect class="box" x="30" y="100" width="150" height="90" rx="12"/>
+    <text class="t m" x="105" y="135">🧑‍💻 dev</text>
+    <text class="s m" x="105" y="157">git push</text>
+    <rect class="box" x="240" y="70" width="330" height="150" rx="14"/>
+    <text class="t m" x="405" y="102">📮 CI — the courier robot</text>
+    <text class="s m" x="405" y="130">✅ test → 🍱 build →</text>
+    <text class="s m" x="405" y="152">🏷️ tag = commit SHA →</text>
+    <text class="s m" x="405" y="174">🔑 12h pass → push</text>
+    <text class="s m" x="405" y="200">(the k8s course's CircleCI does exactly this)</text>
+    <line class="arr" x1="180" y1="145" x2="236" y2="145"/>
+    <g transform="translate(208,128)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
+    <rect class="box" x="640" y="70" width="270" height="110" rx="14"/>
+    <text class="t m" x="775" y="102">🏦 ECR</text>
+    <text class="s m" x="775" y="126">🛡️ scan on push — every image</text>
+    <text class="s m" x="775" y="148">checked for known vulnerabilities</text>
+    <line class="arr" x1="570" y1="125" x2="636" y2="125"/>
+    <g transform="translate(603,108)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
+    <rect class="soft" x="240" y="240" width="320" height="50" rx="10"/>
+    <text class="s m" x="400" y="262">☸️ next course: Kubernetes RUNS these</text>
+    <text class="s m" x="400" y="280">images across a cluster</text>
+    <rect class="soft" x="590" y="240" width="320" height="50" rx="10"/>
+    <text class="s m" x="750" y="262">🤖 then: ArgoCD DEPLOYS them from git,</text>
+    <text class="s m" x="750" y="280">automatically, forever</text>
+    <line class="arr dash" x1="700" y1="180" x2="440" y2="236"/>
+    <g transform="translate(570,215)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
+    <line class="arr dash" x1="790" y1="180" x2="770" y2="236"/>
+    <g transform="translate(800,215)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
+  </svg>
+  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">Read full lesson 12 →</a></p>
+</section>
+
+<footer>
+  Learn Docker School ·
+  <a href="index.html">Course home</a> ·
+  <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a> ·
+  next courses: <a href="https://baluraut.github.io/learn-kubernetes-school/">Kubernetes</a> ·
+  <a href="https://baluraut.github.io/learn-argocd-school/">ArgoCD</a>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# The whole lunch table in one command 🍽️ (lesson 06):
+#   docker compose up --build
+# Then open http://localhost:8080  (nginx → web, by SERVICE NAME)
+services:
+  web:
+    build: ./app                 # bakes app/Dockerfile
+    environment:
+      APP_VERSION: compose-v1
+    # note: no ports here — only the proxy is exposed to your laptop;
+    # 'web' is reachable from other services by its name on the shared network
+
+  proxy:
+    image: nginx:alpine
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf:ro   # lesson 05: a bind mount
+    ports:
+      - "8080:80"                # the only door to the outside
+    depends_on:
+      - web
