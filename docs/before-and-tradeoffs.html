@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Before &amp; trade-offs — Learn Docker School</title>
+<meta name="description" content="For every big Docker/ECR idea: what the world looked like before it, its merits and demerits, and where to use it vs where not.">
+<style>
+  :root {
+    --bg: #f8fafc; --card: #ffffff; --ink: #0f172a; --muted: #475569;
+    --line: #e2e8f0; --accent: #0ea5e9; --ok: #16a34a; --blue: #2563eb; --bad: #dc2626;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0b1220; --card: #131c2e; --ink: #e2e8f0; --muted: #94a3b8; --line: #253349; }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 1020px; margin: 0 auto; padding: 28px 20px 60px; }
+  a { color: var(--blue); }
+  h1 { font-size: 1.9rem; line-height: 1.25; }
+  .sub { color: var(--muted); max-width: 74ch; }
+  .toc { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 6px; }
+  .toc a { border: 1px solid var(--line); background: var(--card); border-radius: 999px; padding: 5px 12px; font-size: .82rem; color: var(--muted); text-decoration: none; }
+  .toc a:hover { color: var(--ink); border-color: var(--muted); }
+  .term { background: var(--card); border: 1px solid var(--line); border-top: 6px solid var(--c, var(--accent)); border-radius: 16px; padding: 22px; margin-top: 26px; scroll-margin-top: 16px; }
+  .term h2 { font-size: 1.3rem; margin-bottom: 10px; }
+  .hist { background: var(--bg); border-left: 5px solid var(--c, var(--accent)); border-radius: 10px; padding: 14px 16px; margin: 10px 0 14px; }
+  .hist b { display: block; margin-bottom: 4px; }
+  .hist p { color: var(--muted); font-size: .95rem; }
+  .quad { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .q { border: 1px solid var(--line); border-radius: 12px; padding: 14px; }
+  .q h4 { margin-bottom: 6px; font-size: .98rem; }
+  .q ul { margin-left: 18px; color: var(--muted); font-size: .92rem; }
+  .q.merit  { border-top: 4px solid var(--ok); }
+  .q.demerit{ border-top: 4px solid var(--bad); }
+  .q.use    { border-top: 4px solid var(--blue); }
+  .q.avoid  { border-top: 4px solid #f59e0b; }
+  .foot { margin-top: 10px; font-size: .92rem; }
+  footer { margin-top: 44px; border-top: 1px solid var(--line); padding-top: 16px; color: var(--muted); font-size: .88rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p><a href="index.html">← Back to the course home</a></p>
+  <h1>⏮️ Before &amp; trade-offs</h1>
+  <p class="sub">Every tool replaced something worse — and is itself the wrong tool somewhere.
+  For each big idea in this course: what life was like <b>before</b> it, its honest
+  <b>merits ✅ and demerits ❌</b>, and <b>where to use it 👍 vs where not 👎</b>.</p>
+  <nav class="toc">
+    <a href="#containers">🍱 Containers</a><a href="#registries">🏬 Images &amp; registries</a>
+    <a href="#compose">🍽️ Compose</a><a href="#multistage">👨‍🍳 Multi-stage</a><a href="#ecr">🏦 ECR</a>
+  </nav>
+</header>
+
+<section class="term" id="containers" style="--c:#0ea5e9">
+  <h2>🍱 Containers (Docker) — lessons 01–04</h2>
+  <div class="hist"><b>⏮️ Before containers</b>
+    <p>The <b>server-room era</b>: one app per physical machine, installed by hand from a wiki page —
+    each server a unique "snowflake" nobody dared touch. Then <b>virtual machines</b> (~2000s):
+    better packing, but every VM ships an entire OS — gigabytes on disk, minutes to boot, and the
+    inside still drifted ("works on my VM"). Shipping software meant install docs, dependency
+    checklists, and prayers. Docker (2013) made the lunchbox cheap: isolation without the whole OS.</p>
+  </div>
+  <div class="quad">
+    <div class="q merit"><h4>✅ Merits</h4><ul>
+      <li>identical on every machine — dev = prod</li>
+      <li>starts in milliseconds, weighs MBs not GBs</li>
+      <li>many per machine (density = cheaper)</li>
+      <li>image = versioned, shippable artifact</li>
+    </ul></div>
+    <div class="q demerit"><h4>❌ Demerits</h4><ul>
+      <li>shares the host kernel → weaker isolation than a VM</li>
+      <li>Linux-first (Mac/Windows secretly run a VM)</li>
+      <li>one more layer to learn and debug</li>
+      <li>images rot if base layers aren't rebuilt/patched</li>
+    </ul></div>
+    <div class="q use"><h4>👍 Use when</h4><ul>
+      <li>web services, APIs, workers — anything server-side</li>
+      <li>CI needs a clean, repeatable environment</li>
+      <li>you're heading to Kubernetes/ECS (containers required)</li>
+    </ul></div>
+    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
+      <li>desktop/GUI apps — wrong tool entirely</li>
+      <li>running <b>untrusted</b> tenant code → use VMs/microVMs</li>
+      <li>needs kernel modules or exotic drivers</li>
+      <li>a static site — object storage hosting is simpler</li>
+    </ul></div>
+  </div>
+  <p class="foot"><a href="lesson-diagrams.html#l01">Diagram ↗</a></p>
+</section>
+
+<section class="term" id="registries" style="--c:#0ea5e9">
+  <h2>🏬 Images &amp; registries — lessons 02, 09</h2>
+  <div class="hist"><b>⏮️ Before image registries</b>
+    <p>Deploys were <b>file transfers</b>: rsync/FTP the code to each server, or bake "golden"
+    VM snapshots/AMIs — slow to build, impossible to diff, mysterious to audit. "Which version is
+    on server 7?" had no good answer. Registries turned deployment artifacts into versioned,
+    fingerprinted, pull-from-anywhere objects.</p>
+  </div>
+  <div class="quad">
+    <div class="q merit"><h4>✅ Merits</h4><ul>
+      <li>immutable, versioned artifacts (tags + digests)</li>
+      <li>layer dedup → pushes/pulls move only what changed</li>
+      <li>one source, any number of pullers</li>
+      <li>digests are tamper-proof fingerprints</li>
+    </ul></div>
+    <div class="q demerit"><h4>❌ Demerits</h4><ul>
+      <li>registry down = deploys down (it's critical infra)</li>
+      <li>storage grows silently — needs a janitor (lesson 11)</li>
+      <li>tag mutability can lie unless you forbid it</li>
+    </ul></div>
+    <div class="q use"><h4>👍 Use when</h4><ul>
+      <li>more than one machine ever runs the app</li>
+      <li>any CI/CD pipeline exists</li>
+      <li>Kubernetes (non-negotiable — it only pulls)</li>
+    </ul></div>
+    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
+      <li>pure serverless zips (Lambda zip → no image needed)</li>
+      <li>single-laptop experiments — local images are fine</li>
+    </ul></div>
+  </div>
+  <p class="foot"><a href="lesson-diagrams.html#l09">Diagram ↗</a></p>
+</section>
+
+<section class="term" id="compose" style="--c:#0ea5e9">
+  <h2>🍽️ Docker Compose — lesson 06</h2>
+  <div class="hist"><b>⏮️ Before Compose</b>
+    <p>A README with twelve "now run this" commands, per-developer shell scripts, and laptops that
+    each worked <i>slightly differently</i>. Or Vagrant VMs: better, but heavyweight and slow.
+    Compose made the whole dev stack one reviewable file and one command.</p>
+  </div>
+  <div class="quad">
+    <div class="q merit"><h4>✅ Merits</h4><ul>
+      <li>whole stack = one file in git, reviewable</li>
+      <li>one command up, one command down</li>
+      <li>identical across every teammate's laptop</li>
+      <li>gentle on-ramp to Kubernetes concepts</li>
+    </ul></div>
+    <div class="q demerit"><h4>❌ Demerits</h4><ul>
+      <li><b>single machine only</b> — no multi-node, no HA</li>
+      <li>no self-healing or autoscaling</li>
+      <li>depends_on = start order, NOT readiness</li>
+    </ul></div>
+    <div class="q use"><h4>👍 Use when</h4><ul>
+      <li>local development (its true home)</li>
+      <li>demos, integration tests in CI</li>
+      <li>small apps on ONE server where downtime is okay</li>
+    </ul></div>
+    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
+      <li>production with real uptime needs → k8s/ECS</li>
+      <li>anything multi-node or auto-scaling</li>
+      <li>as a "cheap k8s" — it will grow teeth later</li>
+    </ul></div>
+  </div>
+  <p class="foot"><a href="lesson-diagrams.html#l06">Diagram ↗</a></p>
+</section>
+
+<section class="term" id="multistage" style="--c:#0ea5e9">
+  <h2>👨‍🍳 Multi-stage builds — lesson 07</h2>
+  <div class="hist"><b>⏮️ Before multi-stage (added to Docker in 2017)</b>
+    <p>Either you <b>built on the host</b> and COPY'd artifacts in (host drift — the exact disease
+    containers cure), or you kept <b>two Dockerfiles + a glue script</b> (the old "builder
+    pattern"), or you just <b>shipped the kitchen</b>: 1GB+ production images with compilers,
+    package managers and source code inside.</p>
+  </div>
+  <div class="quad">
+    <div class="q merit"><h4>✅ Merits</h4><ul>
+      <li>tiny final images (10–20× smaller is routine)</li>
+      <li>no build tools in prod → far fewer CVEs</li>
+      <li>one file, fully reproducible</li>
+    </ul></div>
+    <div class="q demerit"><h4>❌ Demerits</h4><ul>
+      <li>debugging intermediate stages takes practice</li>
+      <li>CI cache needs care (--cache-from) or builds slow down</li>
+    </ul></div>
+    <div class="q use"><h4>👍 Use when</h4><ul>
+      <li>anything with a build step: npm build, Go, Java, Rust</li>
+      <li>image size or scan reports hurt</li>
+    </ul></div>
+    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
+      <li>there's nothing to build — our zero-dep server.js is
+          happily single-stage; stages for ceremony help nobody</li>
+    </ul></div>
+  </div>
+  <p class="foot"><a href="lesson-diagrams.html#l07">Diagram ↗</a></p>
+</section>
+
+<section class="term" id="ecr" style="--c:#ea580c">
+  <h2>🏦 AWS ECR — lessons 10–12</h2>
+  <div class="hist"><b>⏮️ Before ECR (2015)</b>
+    <p>Either <b>Docker Hub for everything</b> (public by default, rate-limited, passwords on every
+    node), or <b>self-hosting registry:2</b> — meaning YOU patch it, scale it, store it, back it up
+    and secure it. On AWS, that was a lot of undifferentiated pain next to the compute you already ran.</p>
+  </div>
+  <div class="quad">
+    <div class="q merit"><h4>✅ Merits</h4><ul>
+      <li>IAM auth — EKS nodes pull with a role, zero passwords</li>
+      <li>scan-on-push, immutable tags, lifecycle janitor built in</li>
+      <li>same-region pulls: fast + no egress surprise</li>
+      <li>pennies at small scale, zero servers to run</li>
+    </ul></div>
+    <div class="q demerit"><h4>❌ Demerits</h4><ul>
+      <li>AWS-only; addresses are account- and region-bound</li>
+      <li>12-hour token dance for humans (fine for CI)</li>
+      <li>cross-account sharing takes policy work</li>
+    </ul></div>
+    <div class="q use"><h4>👍 Use when</h4><ul>
+      <li>your workloads run on AWS (EKS, ECS, Lambda containers)</li>
+      <li>you want scans + tidy-up without extra tools</li>
+    </ul></div>
+    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
+      <li>publishing public/open-source images → Docker Hub or GHCR</li>
+      <li>deliberately multi-cloud → GHCR or self-hosted Harbor</li>
+    </ul></div>
+  </div>
+  <p class="foot"><a href="lesson-diagrams.html#l10">Diagram ↗</a></p>
+</section>
+
+<footer>
+  Learn Docker School · <a href="index.html">Course home</a> ·
+  <a href="lesson-diagrams.html">Lesson diagrams</a> ·
+  <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a>
+</footer>
+
+</div>
+</body>
+</html>
