@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="mr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Before &amp; trade-offs — Learn Docker School</title>
-<meta name="description" content="For every big Docker/ECR idea: what the world looked like before it, its merits and demerits, and where to use it vs where not.">
-<meta property="og:title" content="Before &amp; trade-offs — Learn Docker School">
-<meta property="og:description" content="For every big Docker/ECR idea: what the world looked like before it, its merits and demerits, and where to use it vs where not.">
-<meta property="og:image" content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title data-en="Before &amp;amp; trade-offs — Learn Docker School">आधी काय होते &amp; फायदे-तोटे — Learn Docker School</title>
+<meta content="For every big Docker/ECR idea: what the world looked like before it, its merits and demerits, and where to use it vs where not." name="description"/>
+<meta content="Before &amp; trade-offs — Learn Docker School" property="og:title"/>
+<meta content="For every big Docker/ECR idea: what the world looked like before it, its merits and demerits, and where to use it vs where not." property="og:description"/>
+<meta content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png" property="og:image"/>
+<meta content="website" property="og:type"/>
+<meta content="summary_large_image" name="twitter:card"/>
 <style>
   :root {
     --bg: #f8fafc; --card: #ffffff; --ink: #0f172a; --muted: #475569;
@@ -45,196 +46,212 @@
 
   @media (min-width: 1660px) { .wrap { max-width: 1580px; } }
 </style>
-</head>
-<body>
+
+<style id="i18n-css">
+#lang-pick{position:fixed;top:10px;right:10px;z-index:9999;font:600 .85rem -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--card,#fff);color:var(--ink,#0f172a);border:1px solid var(--line,#e2e8f0);border-radius:999px;padding:6px 12px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer}
+html[lang="mr"] body{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",sans-serif}
+@media print{#lang-pick{display:none}}
+</style></head>
+<body><select aria-label="Language / भाषा" id="lang-pick" onchange="schoolSetLang(this.value)">
+<option value="mr">🇮🇳 मराठी</option><option value="en">🇬🇧 English</option></select>
 <div class="wrap">
-
 <header>
-  <p><a href="index.html">← Back to the course home</a></p>
-  <h1>⏮️ Before &amp; trade-offs</h1>
-  <p class="sub">Every tool replaced something worse — and is itself the wrong tool somewhere.
-  For each big idea in this course: what life was like <b>before</b> it, its honest
-  <b>merits ✅ and demerits ❌</b>, and <b>where to use it 👍 vs where not 👎</b>.</p>
-  <nav class="toc">
-    <a href="#containers">🍱 Containers</a><a href="#registries">🏬 Images &amp; registries</a>
-    <a href="#compose">🍽️ Compose</a><a href="#multistage">👨‍🍳 Multi-stage</a><a href="#ecr">🏦 ECR</a>
-  </nav>
+<p data-en='&lt;a href="index.html"&gt;← Back to the course home&lt;/a&gt;'><a href="index.html">← कोर्सच्या मुख्य पानाकडे परत</a></p>
+<h1 data-en="⏮️ Before &amp;amp; trade-offs">⏮️ आधी काय होते &amp; फायदे-तोटे</h1>
+<p class="sub" data-en="Every tool replaced something worse — and is itself the wrong tool somewhere.
+  For each big idea in this course: what life was like &lt;b&gt;before&lt;/b&gt; it, its honest
+  &lt;b&gt;merits ✅ and demerits ❌&lt;/b&gt;, and &lt;b&gt;where to use it 👍 vs where not 👎&lt;/b&gt;.">प्रत्येक साधनाने काहीतरी वाईट गोष्ट बदलली — आणि तेच साधन कुठेतरी चुकीचे ठरते. या कोर्समधील प्रत्येक मोठ्या कल्पनेसाठी: ती येण्या<b>आधी</b> जीवन कसे होते, तिचे प्रामाणिक <b>फायदे ✅ आणि तोटे ❌</b>, आणि <b>कुठे वापरावी 👍 विरुद्ध कुठे नाही 👎</b>.</p>
+<nav class="toc" data-en='
+&lt;a href="#containers"&gt;🍱 Containers&lt;/a&gt;&lt;a href="#registries"&gt;🏬 Images &amp;amp; registries&lt;/a&gt;
+&lt;a href="#compose"&gt;🍽️ Compose&lt;/a&gt;&lt;a href="#multistage"&gt;👨‍🍳 Multi-stage&lt;/a&gt;&lt;a href="#ecr"&gt;🏦 ECR&lt;/a&gt;
+'><a href="#containers">🍱 कंटेनर</a><a href="#registries">🏬 इमेज &amp; रजिस्ट्री</a> <a href="#compose">🍽️ Compose</a><a href="#multistage">👨‍🍳 Multi-stage</a><a href="#ecr">🏦 ECR</a></nav>
 </header>
-
 <section class="term" id="containers" style="--c:#0ea5e9">
-  <h2>🍱 Containers (Docker) — lessons 01–04</h2>
-  <div class="hist"><b>⏮️ Before containers</b>
-    <p>The <b>server-room era</b>: one app per physical machine, installed by hand from a wiki page —
-    each server a unique "snowflake" nobody dared touch. Then <b>virtual machines</b> (~2000s):
+<h2 data-en="🍱 Containers (Docker) — lessons 01–04">🍱 कंटेनर (Docker) — धडे 01–04</h2>
+<div class="hist"><b data-en="⏮️ Before containers">⏮️ कंटेनरच्या आधी</b>
+<p data-en='The &lt;b&gt;server-room era&lt;/b&gt;: one app per physical machine, installed by hand from a wiki page —
+    each server a unique "snowflake" nobody dared touch. Then &lt;b&gt;virtual machines&lt;/b&gt; (~2000s):
     better packing, but every VM ships an entire OS — gigabytes on disk, minutes to boot, and the
     inside still drifted ("works on my VM"). Shipping software meant install docs, dependency
-    checklists, and prayers. Docker (2013) made the lunchbox cheap: isolation without the whole OS.</p>
-  </div>
-  <div class="quad">
-    <div class="q merit"><h4>✅ Merits</h4><ul>
-      <li>identical on every machine — dev = prod</li>
-      <li>starts in milliseconds, weighs MBs not GBs</li>
-      <li>many per machine (density = cheaper)</li>
-      <li>image = versioned, shippable artifact</li>
-    </ul></div>
-    <div class="q demerit"><h4>❌ Demerits</h4><ul>
-      <li>shares the host kernel → weaker isolation than a VM</li>
-      <li>Linux-first (Mac/Windows secretly run a VM)</li>
-      <li>one more layer to learn and debug</li>
-      <li>images rot if base layers aren't rebuilt/patched</li>
-    </ul></div>
-    <div class="q use"><h4>👍 Use when</h4><ul>
-      <li>web services, APIs, workers — anything server-side</li>
-      <li>CI needs a clean, repeatable environment</li>
-      <li>you're heading to Kubernetes/ECS (containers required)</li>
-    </ul></div>
-    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
-      <li>desktop/GUI apps — wrong tool entirely</li>
-      <li>running <b>untrusted</b> tenant code → use VMs/microVMs</li>
-      <li>needs kernel modules or exotic drivers</li>
-      <li>a static site — object storage hosting is simpler</li>
-    </ul></div>
-  </div>
-  <p class="foot"><a href="lesson-diagrams.html#l01">Diagram ↗</a></p>
+    checklists, and prayers. Docker (2013) made the lunchbox cheap: isolation without the whole OS.'><b>सर्व्हर-रूमचा काळ</b>: प्रत्येक भौतिक मशीनवर एक ॲप, wiki पानावरून हाताने install केलेले — प्रत्येक सर्व्हर एक अनोखा "snowflake" ज्याला हात लावायची कोणाची हिंमत नसे. मग <b>virtual machines</b> (~2000 चे दशक): चांगली गर्दी, पण प्रत्येक VM संपूर्ण OS घेऊन येते — डिस्कवर गिगाबाइट, boot ला मिनिटे, आणि आतले तरीही बदलत राही ("माझ्या VM वर चालते"). सॉफ्टवेअर पाठवणे म्हणजे install डॉक्स, dependency याद्या, आणि प्रार्थना. Docker ने (2013) डबा स्वस्त केला: संपूर्ण OS शिवाय isolation.</p>
+</div>
+<div class="quad">
+<div class="q merit"><h4 data-en="✅ Merits">✅ फायदे</h4><ul>
+<li data-en="identical on every machine — dev = prod">प्रत्येक मशीनवर एकसारखे — dev = prod</li>
+<li data-en="starts in milliseconds, weighs MBs not GBs">मिलिसेकंदांत सुरू, GB नव्हे MB चे वजन</li>
+<li data-en="many per machine (density = cheaper)">एका मशीनवर अनेक (घनता = स्वस्त)</li>
+<li data-en="image = versioned, shippable artifact">इमेज = आवृत्ती असलेली, पाठवता येणारी वस्तू</li>
+</ul></div>
+<div class="q demerit"><h4 data-en="❌ Demerits">❌ तोटे</h4><ul>
+<li data-en="shares the host kernel → weaker isolation than a VM">host चा kernel वाटून घेते → VM पेक्षा कमकुवत isolation</li>
+<li data-en="Linux-first (Mac/Windows secretly run a VM)">Linux-प्रथम (Mac/Windows गुपचूप VM चालवतात)</li>
+<li data-en="one more layer to learn and debug">शिकायला आणि debug करायला आणखी एक थर</li>
+<li data-en="images rot if base layers aren't rebuilt/patched">base layers पुन्हा न बांधल्या/patch न केल्यास इमेज सडतात</li>
+</ul></div>
+<div class="q use"><h4 data-en="👍 Use when">👍 वापरा जेव्हा</h4><ul>
+<li data-en="web services, APIs, workers — anything server-side">web services, API, workers — सर्व्हर बाजूचे काहीही</li>
+<li data-en="CI needs a clean, repeatable environment">CI ला स्वच्छ, पुनरावृत्ती करता येणारे environment हवे</li>
+<li data-en="you're heading to Kubernetes/ECS (containers required)">तुम्ही Kubernetes/ECS कडे निघालात (कंटेनर आवश्यक)</li>
+</ul></div>
+<div class="q avoid"><h4 data-en="👎 Think twice when">👎 दोनदा विचार करा जेव्हा</h4><ul>
+<li data-en="desktop/GUI apps — wrong tool entirely">desktop/GUI ॲप्स — पूर्णपणे चुकीचे साधन</li>
+<li data-en="running &lt;b&gt;untrusted&lt;/b&gt; tenant code → use VMs/microVMs"><b>अविश्वसनीय</b> tenant कोड चालवणे → VM/microVM वापरा</li>
+<li data-en="needs kernel modules or exotic drivers">kernel modules किंवा खास drivers लागतात</li>
+<li data-en="a static site — object storage hosting is simpler">static साइट — object storage होस्टिंग सोपे</li>
+</ul></div>
+</div>
+<p class="foot" data-en='&lt;a href="lesson-diagrams.html#l01"&gt;Diagram ↗&lt;/a&gt;'><a href="lesson-diagrams.html#l01">आकृती ↗</a></p>
 </section>
-
 <section class="term" id="registries" style="--c:#0ea5e9">
-  <h2>🏬 Images &amp; registries — lessons 02, 09</h2>
-  <div class="hist"><b>⏮️ Before image registries</b>
-    <p>Deploys were <b>file transfers</b>: rsync/FTP the code to each server, or bake "golden"
+<h2 data-en="🏬 Images &amp;amp; registries — lessons 02, 09">🏬 इमेज &amp; रजिस्ट्री — धडे 02, 09</h2>
+<div class="hist"><b data-en="⏮️ Before image registries">⏮️ इमेज रजिस्ट्रीच्या आधी</b>
+<p data-en='Deploys were &lt;b&gt;file transfers&lt;/b&gt;: rsync/FTP the code to each server, or bake "golden"
     VM snapshots/AMIs — slow to build, impossible to diff, mysterious to audit. "Which version is
     on server 7?" had no good answer. Registries turned deployment artifacts into versioned,
-    fingerprinted, pull-from-anywhere objects.</p>
-  </div>
-  <div class="quad">
-    <div class="q merit"><h4>✅ Merits</h4><ul>
-      <li>immutable, versioned artifacts (tags + digests)</li>
-      <li>layer dedup → pushes/pulls move only what changed</li>
-      <li>one source, any number of pullers</li>
-      <li>digests are tamper-proof fingerprints</li>
-    </ul></div>
-    <div class="q demerit"><h4>❌ Demerits</h4><ul>
-      <li>registry down = deploys down (it's critical infra)</li>
-      <li>storage grows silently — needs a janitor (lesson 11)</li>
-      <li>tag mutability can lie unless you forbid it</li>
-    </ul></div>
-    <div class="q use"><h4>👍 Use when</h4><ul>
-      <li>more than one machine ever runs the app</li>
-      <li>any CI/CD pipeline exists</li>
-      <li>Kubernetes (non-negotiable — it only pulls)</li>
-    </ul></div>
-    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
-      <li>pure serverless zips (Lambda zip → no image needed)</li>
-      <li>single-laptop experiments — local images are fine</li>
-    </ul></div>
-  </div>
-  <p class="foot"><a href="lesson-diagrams.html#l09">Diagram ↗</a></p>
-</section>
-
-<section class="term" id="compose" style="--c:#0ea5e9">
-  <h2>🍽️ Docker Compose — lesson 06</h2>
-  <div class="hist"><b>⏮️ Before Compose</b>
-    <p>A README with twelve "now run this" commands, per-developer shell scripts, and laptops that
-    each worked <i>slightly differently</i>. Or Vagrant VMs: better, but heavyweight and slow.
-    Compose made the whole dev stack one reviewable file and one command.</p>
-  </div>
-  <div class="quad">
-    <div class="q merit"><h4>✅ Merits</h4><ul>
-      <li>whole stack = one file in git, reviewable</li>
-      <li>one command up, one command down</li>
-      <li>identical across every teammate's laptop</li>
-      <li>gentle on-ramp to Kubernetes concepts</li>
-    </ul></div>
-    <div class="q demerit"><h4>❌ Demerits</h4><ul>
-      <li><b>single machine only</b> — no multi-node, no HA</li>
-      <li>no self-healing or autoscaling</li>
-      <li>depends_on = start order, NOT readiness</li>
-    </ul></div>
-    <div class="q use"><h4>👍 Use when</h4><ul>
-      <li>local development (its true home)</li>
-      <li>demos, integration tests in CI</li>
-      <li>small apps on ONE server where downtime is okay</li>
-    </ul></div>
-    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
-      <li>production with real uptime needs → k8s/ECS</li>
-      <li>anything multi-node or auto-scaling</li>
-      <li>as a "cheap k8s" — it will grow teeth later</li>
-    </ul></div>
-  </div>
-  <p class="foot"><a href="lesson-diagrams.html#l06">Diagram ↗</a></p>
-</section>
-
-<section class="term" id="multistage" style="--c:#0ea5e9">
-  <h2>👨‍🍳 Multi-stage builds — lesson 07</h2>
-  <div class="hist"><b>⏮️ Before multi-stage (added to Docker in 2017)</b>
-    <p>Either you <b>built on the host</b> and COPY'd artifacts in (host drift — the exact disease
-    containers cure), or you kept <b>two Dockerfiles + a glue script</b> (the old "builder
-    pattern"), or you just <b>shipped the kitchen</b>: 1GB+ production images with compilers,
-    package managers and source code inside.</p>
-  </div>
-  <div class="quad">
-    <div class="q merit"><h4>✅ Merits</h4><ul>
-      <li>tiny final images (10–20× smaller is routine)</li>
-      <li>no build tools in prod → far fewer CVEs</li>
-      <li>one file, fully reproducible</li>
-    </ul></div>
-    <div class="q demerit"><h4>❌ Demerits</h4><ul>
-      <li>debugging intermediate stages takes practice</li>
-      <li>CI cache needs care (--cache-from) or builds slow down</li>
-    </ul></div>
-    <div class="q use"><h4>👍 Use when</h4><ul>
-      <li>anything with a build step: npm build, Go, Java, Rust</li>
-      <li>image size or scan reports hurt</li>
-    </ul></div>
-    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
-      <li>there's nothing to build — our zero-dep server.js is
-          happily single-stage; stages for ceremony help nobody</li>
-    </ul></div>
-  </div>
-  <p class="foot"><a href="lesson-diagrams.html#l07">Diagram ↗</a></p>
-</section>
-
-<section class="term" id="ecr" style="--c:#ea580c">
-  <h2>🏦 AWS ECR — lessons 10–12</h2>
-  <div class="hist"><b>⏮️ Before ECR (2015)</b>
-    <p>Either <b>Docker Hub for everything</b> (public by default, rate-limited, passwords on every
-    node), or <b>self-hosting registry:2</b> — meaning YOU patch it, scale it, store it, back it up
-    and secure it. On AWS, that was a lot of undifferentiated pain next to the compute you already ran.</p>
-  </div>
-  <div class="quad">
-    <div class="q merit"><h4>✅ Merits</h4><ul>
-      <li>IAM auth — EKS nodes pull with a role, zero passwords</li>
-      <li>scan-on-push, immutable tags, lifecycle janitor built in</li>
-      <li>same-region pulls: fast + no egress surprise</li>
-      <li>pennies at small scale, zero servers to run</li>
-    </ul></div>
-    <div class="q demerit"><h4>❌ Demerits</h4><ul>
-      <li>AWS-only; addresses are account- and region-bound</li>
-      <li>12-hour token dance for humans (fine for CI)</li>
-      <li>cross-account sharing takes policy work</li>
-    </ul></div>
-    <div class="q use"><h4>👍 Use when</h4><ul>
-      <li>your workloads run on AWS (EKS, ECS, Lambda containers)</li>
-      <li>you want scans + tidy-up without extra tools</li>
-    </ul></div>
-    <div class="q avoid"><h4>👎 Think twice when</h4><ul>
-      <li>publishing public/open-source images → Docker Hub or GHCR</li>
-      <li>deliberately multi-cloud → GHCR or self-hosted Harbor</li>
-    </ul></div>
-  </div>
-  <p class="foot"><a href="lesson-diagrams.html#l10">Diagram ↗</a></p>
-</section>
-
-<footer>
-  Learn Docker School · <a href="index.html">Course home</a> ·
-  <a href="lesson-diagrams.html">Lesson diagrams</a> ·
-  <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a>
- ·
-  <a href="https://baluraut.github.io/school/">🏫 all schools</a>
- ·
-  <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 found a mistake?</a>
-</footer>
-
+    fingerprinted, pull-from-anywhere objects.'>Deploy म्हणजे <b>फाइल हस्तांतरण</b>: प्रत्येक सर्व्हरवर rsync/FTP ने कोड, किंवा "golden" VM snapshots/AMI बनवणे — बांधायला हळू, diff करणे अशक्य, audit करणे गूढ. "सर्व्हर 7 वर कोणती आवृत्ती आहे?" ला चांगले उत्तर नव्हते. रजिस्ट्रींनी deployment वस्तूंचे आवृत्ती असलेल्या, fingerprint केलेल्या, कुठूनही ओढता येणाऱ्या वस्तूंमध्ये रूपांतर केले.</p>
 </div>
-</body>
+<div class="quad">
+<div class="q merit"><h4 data-en="✅ Merits">✅ फायदे</h4><ul>
+<li data-en="immutable, versioned artifacts (tags + digests)">अपरिवर्तनीय, आवृत्ती असलेल्या वस्तू (tags + digests)</li>
+<li data-en="layer dedup → pushes/pulls move only what changed">layer dedup → push/pull फक्त बदललेले हलवतात</li>
+<li data-en="one source, any number of pullers">एक स्रोत, कितीही ओढणारे</li>
+<li data-en="digests are tamper-proof fingerprints">digests म्हणजे बदलता न येणारे fingerprint</li>
+</ul></div>
+<div class="q demerit"><h4 data-en="❌ Demerits">❌ तोटे</h4><ul>
+<li data-en="registry down = deploys down (it's critical infra)">रजिस्ट्री बंद = deploy बंद (हे critical infra आहे)</li>
+<li data-en="storage grows silently — needs a janitor (lesson 11)">साठा गुपचूप वाढतो — सफाई कामगार लागतो (धडा 11)</li>
+<li data-en="tag mutability can lie unless you forbid it">tag बदलता येत असेल तर खोटे बोलू शकतो, बंदी नसेल तर</li>
+</ul></div>
+<div class="q use"><h4 data-en="👍 Use when">👍 वापरा जेव्हा</h4><ul>
+<li data-en="more than one machine ever runs the app">एकापेक्षा जास्त मशीन कधीही ॲप चालवतात</li>
+<li data-en="any CI/CD pipeline exists">कोणतीही CI/CD pipeline आहे</li>
+<li data-en="Kubernetes (non-negotiable — it only pulls)">Kubernetes (वाटाघाटी नाही — तो फक्त pull करतो)</li>
+</ul></div>
+<div class="q avoid"><h4 data-en="👎 Think twice when">👎 दोनदा विचार करा जेव्हा</h4><ul>
+<li data-en="pure serverless zips (Lambda zip → no image needed)">शुद्ध serverless zip (Lambda zip → इमेज लागत नाही)</li>
+<li data-en="single-laptop experiments — local images are fine">एका-लॅपटॉपवरचे प्रयोग — स्थानिक इमेज पुरतात</li>
+</ul></div>
+</div>
+<p class="foot" data-en='&lt;a href="lesson-diagrams.html#l09"&gt;Diagram ↗&lt;/a&gt;'><a href="lesson-diagrams.html#l09">आकृती ↗</a></p>
+</section>
+<section class="term" id="compose" style="--c:#0ea5e9">
+<h2 data-en="🍽️ Docker Compose — lesson 06">🍽️ Docker Compose — धडा 06</h2>
+<div class="hist"><b data-en="⏮️ Before Compose">⏮️ Compose च्या आधी</b>
+<p data-en='A README with twelve "now run this" commands, per-developer shell scripts, and laptops that
+    each worked &lt;i&gt;slightly differently&lt;/i&gt;. Or Vagrant VMs: better, but heavyweight and slow.
+    Compose made the whole dev stack one reviewable file and one command.'>बारा "आता हे चालवा" commands असलेली README, प्रत्येक डेव्हलपरच्या shell स्क्रिप्ट, आणि प्रत्येकी <i>थोडे वेगळे</i> चालणारे लॅपटॉप. किंवा Vagrant VMs: चांगले, पण जड आणि हळू. Compose ने संपूर्ण dev stack ला एक review करता येणारी फाइल आणि एक command बनवले.</p>
+</div>
+<div class="quad">
+<div class="q merit"><h4 data-en="✅ Merits">✅ फायदे</h4><ul>
+<li data-en="whole stack = one file in git, reviewable">संपूर्ण stack = git मधील एक फाइल, review करता येणारी</li>
+<li data-en="one command up, one command down">एक command वर, एक command खाली</li>
+<li data-en="identical across every teammate's laptop">प्रत्येक सहकाऱ्याच्या लॅपटॉपवर एकसारखे</li>
+<li data-en="gentle on-ramp to Kubernetes concepts">Kubernetes संकल्पनांकडे सौम्य चढ</li>
+</ul></div>
+<div class="q demerit"><h4 data-en="❌ Demerits">❌ तोटे</h4><ul>
+<li data-en="&lt;b&gt;single machine only&lt;/b&gt; — no multi-node, no HA"><b>फक्त एक मशीन</b> — multi-node नाही, HA नाही</li>
+<li data-en="no self-healing or autoscaling">स्व-उपचार किंवा autoscaling नाही</li>
+<li data-en="depends_on = start order, NOT readiness">depends_on = सुरू होण्याचा क्रम, readiness नाही</li>
+</ul></div>
+<div class="q use"><h4 data-en="👍 Use when">👍 वापरा जेव्हा</h4><ul>
+<li data-en="local development (its true home)">स्थानिक development (त्याचे खरे घर)</li>
+<li data-en="demos, integration tests in CI">डेमो, CI मधील integration tests</li>
+<li data-en="small apps on ONE server where downtime is okay">एका सर्व्हरवरची छोटी ॲप्स जिथे downtime चालतो</li>
+</ul></div>
+<div class="q avoid"><h4 data-en="👎 Think twice when">👎 दोनदा विचार करा जेव्हा</h4><ul>
+<li data-en="production with real uptime needs → k8s/ECS">खऱ्या uptime गरजांसह production → k8s/ECS</li>
+<li data-en="anything multi-node or auto-scaling">multi-node किंवा auto-scaling काहीही</li>
+<li data-en='as a "cheap k8s" — it will grow teeth later'>"स्वस्त k8s" म्हणून — नंतर ते दात दाखवेल</li>
+</ul></div>
+</div>
+<p class="foot" data-en='&lt;a href="lesson-diagrams.html#l06"&gt;Diagram ↗&lt;/a&gt;'><a href="lesson-diagrams.html#l06">आकृती ↗</a></p>
+</section>
+<section class="term" id="multistage" style="--c:#0ea5e9">
+<h2 data-en="👨‍🍳 Multi-stage builds — lesson 07">👨‍🍳 Multi-stage builds — धडा 07</h2>
+<div class="hist"><b data-en="⏮️ Before multi-stage (added to Docker in 2017)">⏮️ multi-stage च्या आधी (2017 मध्ये Docker मध्ये आले)</b>
+<p data-en="Either you &lt;b&gt;built on the host&lt;/b&gt; and COPY'd artifacts in (host drift — the exact disease
+    containers cure), or you kept &lt;b&gt;two Dockerfiles + a glue script&lt;/b&gt; (the old &quot;builder
+    pattern&quot;), or you just &lt;b&gt;shipped the kitchen&lt;/b&gt;: 1GB+ production images with compilers,
+    package managers and source code inside.">एकतर तुम्ही <b>host वर build</b> करून वस्तू COPY करत होतात (host drift — कंटेनर ज्या रोगावर उपाय आहेत तोच), किंवा <b>दोन Dockerfiles + एक glue स्क्रिप्ट</b> ठेवत होतात (जुना "builder pattern"), किंवा तुम्ही सरळ <b>स्वयंपाकघरच पाठवत</b> होतात: compiler, package manager आणि source code असलेल्या 1GB+ production इमेज.</p>
+</div>
+<div class="quad">
+<div class="q merit"><h4 data-en="✅ Merits">✅ फायदे</h4><ul>
+<li data-en="tiny final images (10–20× smaller is routine)">छोट्या अंतिम इमेज (10–20× लहान सामान्य)</li>
+<li data-en="no build tools in prod → far fewer CVEs">prod मध्ये build साधने नाहीत → खूप कमी CVE</li>
+<li data-en="one file, fully reproducible">एक फाइल, पूर्णपणे पुनरुत्पादित करता येणारी</li>
+</ul></div>
+<div class="q demerit"><h4 data-en="❌ Demerits">❌ तोटे</h4><ul>
+<li data-en="debugging intermediate stages takes practice">मधल्या stages debug करायला सराव लागतो</li>
+<li data-en="CI cache needs care (--cache-from) or builds slow down">CI cache ला काळजी लागते (--cache-from) नाहीतर build हळू होतात</li>
+</ul></div>
+<div class="q use"><h4 data-en="👍 Use when">👍 वापरा जेव्हा</h4><ul>
+<li data-en="anything with a build step: npm build, Go, Java, Rust">build step असलेले काहीही: npm build, Go, Java, Rust</li>
+<li data-en="image size or scan reports hurt">इमेजचा आकार किंवा scan reports त्रास देतात</li>
+</ul></div>
+<div class="q avoid"><h4 data-en="👎 Think twice when">👎 दोनदा विचार करा जेव्हा</h4><ul>
+<li data-en="there's nothing to build — our zero-dep server.js is
+          happily single-stage; stages for ceremony help nobody">build करायला काहीच नाही — आपले शून्य-dep server.js आनंदाने single-stage आहे; दिखाव्यासाठी stages कोणालाच मदत करत नाहीत</li>
+</ul></div>
+</div>
+<p class="foot" data-en='&lt;a href="lesson-diagrams.html#l07"&gt;Diagram ↗&lt;/a&gt;'><a href="lesson-diagrams.html#l07">आकृती ↗</a></p>
+</section>
+<section class="term" id="ecr" style="--c:#ea580c">
+<h2 data-en="🏦 AWS ECR — lessons 10–12">🏦 AWS ECR — धडे 10–12</h2>
+<div class="hist"><b data-en="⏮️ Before ECR (2015)">⏮️ ECR च्या आधी (2015)</b>
+<p data-en="Either &lt;b&gt;Docker Hub for everything&lt;/b&gt; (public by default, rate-limited, passwords on every
+    node), or &lt;b&gt;self-hosting registry:2&lt;/b&gt; — meaning YOU patch it, scale it, store it, back it up
+    and secure it. On AWS, that was a lot of undifferentiated pain next to the compute you already ran.">एकतर <b>सगळ्यासाठी Docker Hub</b> (मुळात सार्वजनिक, rate-limited, प्रत्येक node वर पासवर्ड), किंवा <b>स्वतः registry:2 होस्ट करणे</b> — म्हणजे तुम्ही patch करा, वाढवा, साठवा, backup घ्या आणि सुरक्षित ठेवा. AWS वर, आधीच चालवत असलेल्या compute शेजारी हा भरपूर निरर्थक त्रास होता.</p>
+</div>
+<div class="quad">
+<div class="q merit"><h4 data-en="✅ Merits">✅ फायदे</h4><ul>
+<li data-en="IAM auth — EKS nodes pull with a role, zero passwords">IAM auth — EKS nodes role ने pull करतात, शून्य पासवर्ड</li>
+<li data-en="scan-on-push, immutable tags, lifecycle janitor built in">scan-on-push, immutable tags, lifecycle सफाई कामगार अंगभूत</li>
+<li data-en="same-region pulls: fast + no egress surprise">त्याच region मधून pull: जलद + egress चा धक्का नाही</li>
+<li data-en="pennies at small scale, zero servers to run">छोट्या प्रमाणावर काही पैसे, चालवायला शून्य सर्व्हर</li>
+</ul></div>
+<div class="q demerit"><h4 data-en="❌ Demerits">❌ तोटे</h4><ul>
+<li data-en="AWS-only; addresses are account- and region-bound">फक्त AWS; पत्ते account आणि region ला बांधलेले</li>
+<li data-en="12-hour token dance for humans (fine for CI)">माणसांसाठी 12-तासांच्या token चा नाच (CI साठी ठीक)</li>
+<li data-en="cross-account sharing takes policy work">cross-account शेअरिंगला policy चे काम लागते</li>
+</ul></div>
+<div class="q use"><h4 data-en="👍 Use when">👍 वापरा जेव्हा</h4><ul>
+<li data-en="your workloads run on AWS (EKS, ECS, Lambda containers)">तुमचे workloads AWS वर चालतात (EKS, ECS, Lambda containers)</li>
+<li data-en="you want scans + tidy-up without extra tools">अतिरिक्त साधनांशिवाय scan + सफाई हवी</li>
+</ul></div>
+<div class="q avoid"><h4 data-en="👎 Think twice when">👎 दोनदा विचार करा जेव्हा</h4><ul>
+<li data-en="publishing public/open-source images → Docker Hub or GHCR">सार्वजनिक/ओपन-सोर्स इमेज प्रकाशित करणे → Docker Hub किंवा GHCR</li>
+<li data-en="deliberately multi-cloud → GHCR or self-hosted Harbor">मुद्दाम multi-cloud → GHCR किंवा स्वतः होस्ट केलेले Harbor</li>
+</ul></div>
+</div>
+<p class="foot" data-en='&lt;a href="lesson-diagrams.html#l10"&gt;Diagram ↗&lt;/a&gt;'><a href="lesson-diagrams.html#l10">आकृती ↗</a></p>
+</section>
+<footer data-en='
+  Learn Docker School · &lt;a href="index.html"&gt;Course home&lt;/a&gt; ·
+  &lt;a href="lesson-diagrams.html"&gt;Lesson diagrams&lt;/a&gt; ·
+  &lt;a href="https://github.com/BaluRaut/learn-docker-school"&gt;github.com/BaluRaut/learn-docker-school&lt;/a&gt;
+ ·
+  &lt;a href="https://baluraut.github.io/school/"&gt;🏫 all schools&lt;/a&gt;
+ ·
+  &lt;a href="https://github.com/BaluRaut/learn-docker-school/issues"&gt;🐛 found a mistake?&lt;/a&gt;
+'>Learn Docker School · <a href="index.html">कोर्स मुख्य पान</a> · <a href="lesson-diagrams.html">धड्यांच्या आकृत्या</a> · <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a> · <a href="https://baluraut.github.io/school/">🏫 सर्व शाळा</a> · <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 चूक सापडली?</a></footer>
+</div>
+
+<script id="i18n-js">
+function schoolSetLang(l){
+  try{localStorage.setItem('school-lang',l)}catch(e){}
+  document.documentElement.setAttribute('lang',l);
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    if(!el.hasAttribute('data-mr')) el.setAttribute('data-mr', el.innerHTML);
+    el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-mr');
+  });
+  document.querySelectorAll('[data-en-ph]').forEach(function(el){
+    if(!el.hasAttribute('data-mr-ph')) el.setAttribute('data-mr-ph', el.getAttribute('placeholder'));
+    el.setAttribute('placeholder', (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-mr-ph'));
+  });
+  var p=document.getElementById('lang-pick'); if(p) p.value=l;
+}
+(function(){ var l='mr'; try{ l=localStorage.getItem('school-lang')||'mr'; }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){schoolSetLang(l)}); else schoolSetLang(l); })();
+</script></body>
 </html>

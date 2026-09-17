@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Study plan — 🍱 Docker & ECR</title>
-<meta name="description" content="A 4-week study plan for the 🍱 Docker & ECR school: sequence, time estimates, weekly milestones — progress saved in your browser.">
-<meta property="og:title" content="Study plan — 🍱 Docker & ECR"><meta property="og:description" content="12 lessons in 4 weeks, with checkpoints."><meta property="og:image" content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image">
+
+<html lang="mr"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title data-en="Study plan — 🍱 Docker &amp;amp; ECR">अभ्यास योजना — 🍱 Docker &amp; ECR</title>
+<meta content="A 4-week study plan for the 🍱 Docker &amp; ECR school: sequence, time estimates, weekly milestones — progress saved in your browser." name="description"/>
+<meta content="Study plan — 🍱 Docker &amp; ECR" property="og:title"/><meta content="12 lessons in 4 weeks, with checkpoints." property="og:description"/><meta content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png" property="og:image"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/>
 <style>
 :root { --bg:#f8fafc; --card:#fff; --ink:#0f172a; --muted:#475569; --line:#e2e8f0; --accent:#0ea5e9; --ok:#16a34a; --blue:#2563eb; }
 @media (prefers-color-scheme: dark) { :root { --bg:#0b1220; --card:#131c2e; --ink:#e2e8f0; --muted:#94a3b8; --line:#253349; } }
@@ -26,46 +27,52 @@ a { color:var(--blue); } h1 { font-size:1.9rem; } .sub { color:var(--muted); }
 .milestone b { color:var(--ok); }
 #done { display:none; text-align:center; background:var(--card); border:2px solid var(--ok); border-radius:20px; padding:32px 24px; margin-top:26px; }
 footer { margin-top:44px; border-top:1px solid var(--line); padding-top:16px; color:var(--muted); font-size:.88rem; }
-</style></head><body><div class="wrap">
-<p><a href="index.html">← Back to the course home</a></p>
-<h1>🗓️ Study plan — 🍱 Docker & ECR</h1>
-<p class="sub">12 lessons in 4 weeks (~3 sessions/week: read ~15 min + lab ~25 min).
-Tick lessons off — <b>progress saved in this browser</b>.</p>
+</style>
+<style id="i18n-css">
+#lang-pick{position:fixed;top:10px;right:10px;z-index:9999;font:600 .85rem -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--card,#fff);color:var(--ink,#0f172a);border:1px solid var(--line,#e2e8f0);border-radius:999px;padding:6px 12px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer}
+html[lang="mr"] body{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",sans-serif}
+@media print{#lang-pick{display:none}}
+</style></head><body><select aria-label="Language / भाषा" id="lang-pick" onchange="schoolSetLang(this.value)">
+<option value="mr">🇮🇳 मराठी</option><option value="en">🇬🇧 English</option></select><div class="wrap">
+<p data-en='&lt;a href="index.html"&gt;← Back to the course home&lt;/a&gt;'><a href="index.html">← कोर्सच्या मुख्य पानाकडे परत</a></p>
+<h1 data-en="🗓️ Study plan — 🍱 Docker &amp;amp; ECR">🗓️ अभ्यास योजना — 🍱 Docker &amp; ECR</h1>
+<p class="sub" data-en="12 lessons in 4 weeks (~3 sessions/week: read ~15 min + lab ~25 min).
+Tick lessons off — &lt;b&gt;progress saved in this browser&lt;/b&gt;.">12 धडे 4 आठवड्यांत (आठवड्याला ~3 सत्रे: वाचन ~15 मि. + प्रयोग ~25 मि.). धड्यांवर खूण करा — <b>प्रगती या ब्राउझरमध्ये जपली जाते</b>.</p>
 <div class="progress-box"><div class="progress-inner"><span id="ptext">0 / 12</span><div class="bar"><div id="pbar"></div></div></div></div>
 <section class="week" style="--c:#0ea5e9">
-  <h2><span class="wk">WEEK 1</span> 🍱 See it build & run</h2>
-  <div class="lesson-row"><input type="checkbox" data-l="l01" id="sl01"><label for="sl01"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">01 · 🍱 Why containers</a></label><span class="time">~45 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l02" id="sl02"><label for="sl02"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">02 · 🎂 Images & layers</a></label><span class="time">~30 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l03" id="sl03"><label for="sl03"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">03 · 📝 The Dockerfile</a></label><span class="time">~45 min</span></div>
-  <div class="milestone">🏁 <b>Checkpoint:</b> build the demo image, run it, and explain image vs container out loud.</div>
+<h2 data-en='&lt;span class="wk"&gt;WEEK 1&lt;/span&gt; 🍱 See it build &amp;amp; run'><span class="wk">आठवडा 1</span> 🍱 build &amp; run होताना पहा</h2>
+<div class="lesson-row"><input data-l="l01" id="sl01" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md"&gt;01 · 🍱 Why containers&lt;/a&gt;' for="sl01"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">01 · 🍱 कंटेनर का</a></label><span class="time" data-en="~45 min">~45 मि.</span></div>
+<div class="lesson-row"><input data-l="l02" id="sl02" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md"&gt;02 · 🎂 Images &amp;amp; layers&lt;/a&gt;' for="sl02"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">02 · 🎂 इमेज &amp; लेयर</a></label><span class="time" data-en="~30 min">~30 मि.</span></div>
+<div class="lesson-row"><input data-l="l03" id="sl03" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md"&gt;03 · 📝 The Dockerfile&lt;/a&gt;' for="sl03"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">03 · 📝 Dockerfile</a></label><span class="time" data-en="~45 min">~45 मि.</span></div>
+<div class="milestone" data-en="🏁 &lt;b&gt;Checkpoint:&lt;/b&gt; build the demo image, run it, and explain image vs container out loud.">🏁 <b>तपासणी:</b> डेमो इमेज build करा, चालवा, आणि इमेज विरुद्ध कंटेनर मोठ्याने समजावा.</div>
 </section>
 <section class="week" style="--c:#0ea5e9">
-  <h2><span class="wk">WEEK 2</span> 🍽️ Run it properly</h2>
-  <div class="lesson-row"><input type="checkbox" data-l="l04" id="sl04"><label for="sl04"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">04 · 🍽️ Running containers</a></label><span class="time">~40 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l05" id="sl05"><label for="sl05"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">05 · 🧊 Volumes & networks</a></label><span class="time">~40 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l06" id="sl06"><label for="sl06"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">06 · 🍽️🍽️ Docker Compose</a></label><span class="time">~40 min</span></div>
-  <div class="milestone">🏁 <b>Checkpoint:</b> compose up the whole table; call a container BY NAME from another.</div>
+<h2 data-en='&lt;span class="wk"&gt;WEEK 2&lt;/span&gt; 🍽️ Run it properly'><span class="wk">आठवडा 2</span> 🍽️ नीट चालवा</h2>
+<div class="lesson-row"><input data-l="l04" id="sl04" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md"&gt;04 · 🍽️ Running containers&lt;/a&gt;' for="sl04"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">04 · 🍽️ कंटेनर चालवणे</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="lesson-row"><input data-l="l05" id="sl05" type="checkbox"/><label for="sl05"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">05 · 🧊 Volumes &amp; networks</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="lesson-row"><input data-l="l06" id="sl06" type="checkbox"/><label for="sl06"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">06 · 🍽️🍽️ Docker Compose</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="milestone" data-en="🏁 &lt;b&gt;Checkpoint:&lt;/b&gt; compose up the whole table; call a container BY NAME from another.">🏁 <b>तपासणी:</b> संपूर्ण टेबल compose up करा; एका कंटेनरमधून दुसऱ्याला नावाने कॉल करा.</div>
 </section>
 <section class="week" style="--c:#0ea5e9">
-  <h2><span class="wk">WEEK 3</span> 👨‍🍳 Make it production-grade</h2>
-  <div class="lesson-row"><input type="checkbox" data-l="l07" id="sl07"><label for="sl07"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">07 · 👨‍🍳 Multi-stage builds</a></label><span class="time">~40 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l08" id="sl08"><label for="sl08"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">08 · 🏷️ Image hygiene</a></label><span class="time">~35 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l09" id="sl09"><label for="sl09"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">09 · 🏬 Registries</a></label><span class="time">~40 min</span></div>
-  <div class="milestone">🏁 <b>Checkpoint:</b> multi-stage build: compare sizes; run the local registry round-trip.</div>
+<h2 data-en='&lt;span class="wk"&gt;WEEK 3&lt;/span&gt; 👨‍🍳 Make it production-grade'><span class="wk">आठवडा 3</span> 👨‍🍳 production-दर्जाचे बनवा</h2>
+<div class="lesson-row"><input data-l="l07" id="sl07" type="checkbox"/><label for="sl07"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">07 · 👨‍🍳 Multi-stage builds</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="lesson-row"><input data-l="l08" id="sl08" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md"&gt;08 · 🏷️ Image hygiene&lt;/a&gt;' for="sl08"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">08 · 🏷️ इमेजची स्वच्छता</a></label><span class="time" data-en="~35 min">~35 मि.</span></div>
+<div class="lesson-row"><input data-l="l09" id="sl09" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md"&gt;09 · 🏬 Registries&lt;/a&gt;' for="sl09"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">09 · 🏬 रजिस्ट्री</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="milestone" data-en="🏁 &lt;b&gt;Checkpoint:&lt;/b&gt; multi-stage build: compare sizes; run the local registry round-trip.">🏁 <b>तपासणी:</b> multi-stage build: आकारांची तुलना करा; स्थानिक रजिस्ट्रीची फेरी चालवा.</div>
 </section>
 <section class="week" style="--c:#0ea5e9">
-  <h2><span class="wk">WEEK 4</span> 🏦 Ship it to the cloud</h2>
-  <div class="lesson-row"><input type="checkbox" data-l="l10" id="sl10"><label for="sl10"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">10 · 🏦 ECR setup</a></label><span class="time">~40 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l11" id="sl11"><label for="sl11"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">11 · 🧹 Push, pull & lifecycle</a></label><span class="time">~40 min</span></div>
-  <div class="lesson-row"><input type="checkbox" data-l="l12" id="sl12"><label for="sl12"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">12 · 📮 CI to cloud</a></label><span class="time">~40 min</span></div>
-  <div class="milestone">🏁 <b>Checkpoint:</b> push to ECR with the janitor policy on, and read your first scan report.</div>
+<h2 data-en='&lt;span class="wk"&gt;WEEK 4&lt;/span&gt; 🏦 Ship it to the cloud'><span class="wk">आठवडा 4</span> 🏦 क्लाउडवर पाठवा</h2>
+<div class="lesson-row"><input data-l="l10" id="sl10" type="checkbox"/><label for="sl10"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">10 · 🏦 ECR setup</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="lesson-row"><input data-l="l11" id="sl11" type="checkbox"/><label for="sl11"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">11 · 🧹 Push, pull &amp; lifecycle</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="lesson-row"><input data-l="l12" id="sl12" type="checkbox"/><label data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md"&gt;12 · 📮 CI to cloud&lt;/a&gt;' for="sl12"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">12 · 📮 CI ते क्लाउड</a></label><span class="time" data-en="~40 min">~40 मि.</span></div>
+<div class="milestone" data-en="🏁 &lt;b&gt;Checkpoint:&lt;/b&gt; push to ECR with the janitor policy on, and read your first scan report.">🏁 <b>तपासणी:</b> सफाई policy चालू ठेवून ECR वर push करा, आणि तुमचा पहिला scan report वाचा.</div>
 </section>
-
-<div id="done"><h2>🎓 12 / 12 — school complete!</h2>
-<p class="sub" style="margin-top:8px">Next stop: <a href="https://baluraut.github.io/school/">the grand path</a> — tick this school off there too.</p></div>
-<footer>Part of <a href="https://baluraut.github.io/school/">🏫 The School</a> · <a href="index.html">course home</a> · <a href="quiz.html">🧪 quiz</a> ·
-  <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 found a mistake?</a>
-</footer>
+<div id="done"><h2 data-en="🎓 12 / 12 — school complete!">🎓 12 / 12 — शाळा पूर्ण!</h2>
+<p class="sub" data-en='Next stop: &lt;a href="https://baluraut.github.io/school/"&gt;the grand path&lt;/a&gt; — tick this school off there too.' style="margin-top:8px">पुढचा थांबा: <a href="https://baluraut.github.io/school/">मोठा मार्ग</a> — तिथेही या शाळेवर खूण करा.</p></div>
+<footer data-en='Part of &lt;a href="https://baluraut.github.io/school/"&gt;🏫 The School&lt;/a&gt; · &lt;a href="index.html"&gt;course home&lt;/a&gt; · &lt;a href="quiz.html"&gt;🧪 quiz&lt;/a&gt; ·
+  &lt;a href="https://github.com/BaluRaut/learn-docker-school/issues"&gt;🐛 found a mistake?&lt;/a&gt;
+'><a href="https://baluraut.github.io/school/">🏫 द स्कूल</a> चा भाग · <a href="index.html">कोर्स मुख्य पान</a> · <a href="quiz.html">🧪 प्रश्नमंजुषा</a> · <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 चूक सापडली?</a></footer>
 </div>
 <script>
 (function() {
@@ -85,4 +92,21 @@ Tick lessons off — <b>progress saved in this browser</b>.</p>
   });
   render();
 })();
+</script>
+<script id="i18n-js">
+function schoolSetLang(l){
+  try{localStorage.setItem('school-lang',l)}catch(e){}
+  document.documentElement.setAttribute('lang',l);
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    if(!el.hasAttribute('data-mr')) el.setAttribute('data-mr', el.innerHTML);
+    el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-mr');
+  });
+  document.querySelectorAll('[data-en-ph]').forEach(function(el){
+    if(!el.hasAttribute('data-mr-ph')) el.setAttribute('data-mr-ph', el.getAttribute('placeholder'));
+    el.setAttribute('placeholder', (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-mr-ph'));
+  });
+  var p=document.getElementById('lang-pick'); if(p) p.value=l;
+}
+(function(){ var l='mr'; try{ l=localStorage.getItem('school-lang')||'mr'; }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){schoolSetLang(l)}); else schoolSetLang(l); })();
 </script></body></html>

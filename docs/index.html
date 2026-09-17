@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="mr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Learn Docker &amp; ECR the school way</title>
-<meta name="description" content="12 branch-by-branch lessons: Docker on your laptop (images, layers, compose, multi-stage) then registries & AWS ECR — ELI5 school analogies, diagrams and hands-on labs.">
-<meta property="og:title" content="Learn Docker &amp; ECR the school way">
-<meta property="og:description" content="12 branch-by-branch lessons: Docker on your laptop (images, layers, compose, multi-stage) then registries & AWS ECR — ELI5 school analogies, diagrams and hands-on labs.">
-<meta property="og:image" content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title data-en="Learn Docker &amp;amp; ECR the school way">Docker &amp; ECR शाळेच्या पद्धतीने शिका</title>
+<meta content="12 branch-by-branch lessons: Docker on your laptop (images, layers, compose, multi-stage) then registries &amp; AWS ECR — ELI5 school analogies, diagrams and hands-on labs." name="description"/>
+<meta content="Learn Docker &amp; ECR the school way" property="og:title"/>
+<meta content="12 branch-by-branch lessons: Docker on your laptop (images, layers, compose, multi-stage) then registries &amp; AWS ECR — ELI5 school analogies, diagrams and hands-on labs." property="og:description"/>
+<meta content="https://baluraut.github.io/learn-docker-school/images/big-picture-4k.png" property="og:image"/>
+<meta content="website" property="og:type"/>
+<meta content="summary_large_image" name="twitter:card"/>
 <style>
   :root {
     --bg: #f8fafc; --card: #ffffff; --ink: #0f172a; --muted: #475569;
@@ -67,516 +68,514 @@
   .nc { fill: var(--c, var(--accent)); }
   .nt { font: 700 12px -apple-system, sans-serif; fill: #fff; text-anchor: middle; }
 </style>
-</head>
-<body>
-<svg width="0" height="0" style="position:absolute"><defs>
-  <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-    <path d="M0 0 L10 5 L0 10 z" fill="#64748b"/>
-  </marker>
+
+<style id="i18n-css">
+#lang-pick{position:fixed;top:10px;right:10px;z-index:9999;font:600 .85rem -apple-system,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--card,#fff);color:var(--ink,#0f172a);border:1px solid var(--line,#e2e8f0);border-radius:999px;padding:6px 12px;box-shadow:0 2px 10px rgba(0,0,0,.08);cursor:pointer}
+html[lang="mr"] body{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",-apple-system,"Segoe UI",Helvetica,Arial,sans-serif}
+html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari Sangam MN","Nirmala UI",sans-serif}
+@media print{#lang-pick{display:none}}
+</style></head>
+<body><select aria-label="Language / भाषा" id="lang-pick" onchange="schoolSetLang(this.value)">
+<option value="mr">🇮🇳 मराठी</option><option value="en">🇬🇧 English</option></select>
+<svg height="0" style="position:absolute" width="0"><defs>
+<marker id="arw" markerheight="7" markerwidth="7" orient="auto-start-reverse" refx="9" refy="5" viewbox="0 0 10 10">
+<path d="M0 0 L10 5 L0 10 z" fill="#64748b"></path>
+</marker>
 </defs></svg>
 <div class="wrap">
-
-  <header>
-    <h1>🍱 Learn Docker &amp; ECR the school way</h1>
-    <p class="sub">Course <b>1 of 3</b> in the school trilogy — before
-    <a href="https://baluraut.github.io/learn-kubernetes-school/">Kubernetes</a> runs your app and
-    <a href="https://baluraut.github.io/learn-argocd-school/">ArgoCD</a> deploys it, something has to
-    <b>pack and ship it</b>. That's this course: images, Dockerfiles, compose and multi-stage builds
-    on your laptop, then registries and AWS ECR in the cloud.</p>
-    <div class="chips">
-      <span class="chip">🍱 images</span><span class="chip">🎂 layers</span>
-      <span class="chip">📝 Dockerfiles</span><span class="chip">🍽️ compose</span>
-      <span class="chip">👨‍🍳 multi-stage</span><span class="chip">🏦 AWS ECR</span>
-    </div>
-  </header>
-
-  <div class="vs">
-    <div class="vcol" style="border-top: 5px solid #0ea5e9">
-      <h3>🐳 Part 1 — PACK IT (laptop only)</h3>
-      <ul>
-        <li>why containers end "works on my machine"</li>
-        <li>images = layer cakes 🎂; the build cache</li>
-        <li>run, ports, env, logs, volumes, networks</li>
-        <li>compose the whole table; multi-stage; hygiene</li>
-      </ul>
-    </div>
-    <div class="vcol" style="border-top: 5px solid #ea580c">
-      <h3>☁️ Part 2 — SHIP IT (registries &amp; ECR)</h3>
-      <ul>
-        <li>registries: the frozen-lunchbox warehouse 🏬</li>
-        <li>rent your bank locker: a private ECR repo 🏦</li>
-        <li>tag → login (12h pass) → push → pull from EKS</li>
-        <li>janitor rules, scans, and CI doing it all for you</li>
-      </ul>
-    </div>
-  </div>
-
-  <h2 id="big-picture">🗺️ The big picture — one diagram, the whole journey</h2>
-  <p class="sub">The whole course on one canvas: PACK IT (blue, lessons 1–8) and SHIP IT
-  (orange, lessons 9–12). Click it for the <a href="images/big-picture-4k.png">4K version</a> —
-  great as a single reference.</p>
-  <figure style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:16px">
-    <a href="images/big-picture-4k.png"><img src="images/big-picture.svg" alt="The big picture: building Docker images locally, then shipping them to AWS ECR and on to Kubernetes" loading="lazy" style="width:100%;height:auto;border-radius:8px;background:#fff"></a>
-  </figure>
-
-  <h2 id="part1">🐳 Part 1 — PACK IT: Docker on your laptop (lessons 1–8)</h2>
-  <p class="sub">Only Docker Desktop needed — zero cloud, zero cost. One git branch = one idea;
-  branch 07 contains lessons 01–07.</p>
-
-  <div class="grid">
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">1</span><h3>🍱 Why containers</h3></div><span class="ana">The packed lunchbox — identical on every machine.</span><code>lesson-01-why-containers</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l01">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">2</span><h3>🎂 Images &amp; layers</h3></div><span class="ana">A layer cake — unchanged layers come from the cache.</span><code>lesson-02-images-layers</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l02">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">3</span><h3>📝 The Dockerfile</h3></div><span class="ana">The recipe card — seven lines cover 95% of real files.</span><code>lesson-03-dockerfile</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l03">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">4</span><h3>🍽️ Running containers</h3></div><span class="ana">Lunch time — ports are the serving window.</span><code>lesson-04-run-containers</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l04">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">5</span><h3>🧊 Volumes &amp; networks</h3></div><span class="ana">The shared fridge and the intercom — data and calls by name.</span><code>lesson-05-volumes-networks</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l05">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">6</span><h3>🍽️🍽️ Docker Compose</h3></div><span class="ana">Set the whole table with one command.</span><code>lesson-06-docker-compose</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l06">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">7</span><h3>👨‍🍳 Multi-stage builds</h3></div><span class="ana">Cook in the kitchen, pack only the food — tiny images.</span><code>lesson-07-multi-stage</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l07">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">8</span><h3>🏷️ Image hygiene</h3></div><span class="ana">Label your boxes; never pack your house keys.</span><code>lesson-08-image-hygiene</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l08">See the diagram ↗</a></div>
-  </div>
-
-  <h2 id="part2">☁️ Part 2 — SHIP IT: registries &amp; AWS ECR (lessons 9–12)</h2>
-  <p class="sub">The bridge from laptop to cloud: where images live so that clusters can pull them.
-  Uses a real AWS account (pennies; cleanup shown).</p>
-
-  <div class="grid">
-    <div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">9</span><h3>🏬 Registries</h3></div><span class="ana">The frozen-lunchbox warehouse — push once, pull anywhere.</span><code>lesson-09-registries</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l09">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">10</span><h3>🏦 ECR setup</h3></div><span class="ana">Rent the bank locker; get your 12-hour day pass.</span><code>lesson-10-ecr-setup</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l10">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">11</span><h3>🧹 Push, pull &amp; lifecycle</h3></div><span class="ana">File the boxes; the janitor keeps only the newest ten.</span><code>lesson-11-push-pull-lifecycle</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l11">See the diagram ↗</a></div>
-    <div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">12</span><h3>📮 CI to cloud</h3></div><span class="ana">The courier files the copies — and hands off to k8s &amp; ArgoCD.</span><code>lesson-12-ci-to-cloud</code><a class="go" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">Read lesson →</a><a class="go" href="lesson-diagrams.html#l12">See the diagram ↗</a></div>
-  </div>
-
-  <pre><code># take the course locally (just Docker Desktop for Part 1):
+<header>
+<h1 data-en="🍱 Learn Docker &amp;amp; ECR the school way">🍱 Docker &amp; ECR शाळेच्या पद्धतीने शिका</h1>
+<p class="sub" data-en="Course &lt;b&gt;1 of 3&lt;/b&gt; in the school trilogy — before
+    &lt;a href=&quot;https://baluraut.github.io/learn-kubernetes-school/&quot;&gt;Kubernetes&lt;/a&gt; runs your app and
+    &lt;a href=&quot;https://baluraut.github.io/learn-argocd-school/&quot;&gt;ArgoCD&lt;/a&gt; deploys it, something has to
+    &lt;b&gt;pack and ship it&lt;/b&gt;. That's this course: images, Dockerfiles, compose and multi-stage builds
+    on your laptop, then registries and AWS ECR in the cloud.">शाळेच्या त्रयीतील कोर्स <b>1 पैकी 3</b> — <a href="https://baluraut.github.io/learn-kubernetes-school/">Kubernetes</a> तुमचे ॲप चालवण्याआधी आणि <a href="https://baluraut.github.io/learn-argocd-school/">ArgoCD</a> ते deploy करण्याआधी, कोणीतरी ते <b>पॅक करून पाठवायला</b> हवे. तोच हा कोर्स: तुमच्या लॅपटॉपवर इमेज, Dockerfiles, compose आणि multi-stage builds, मग क्लाउडमध्ये रजिस्ट्री आणि AWS ECR.</p>
+<div class="chips" data-en='
+&lt;span class="chip"&gt;🍱 images&lt;/span&gt;&lt;span class="chip"&gt;🎂 layers&lt;/span&gt;
+&lt;span class="chip"&gt;📝 Dockerfiles&lt;/span&gt;&lt;span class="chip"&gt;🍽️ compose&lt;/span&gt;
+&lt;span class="chip"&gt;👨‍🍳 multi-stage&lt;/span&gt;&lt;span class="chip"&gt;🏦 AWS ECR&lt;/span&gt;
+'><span class="chip">🍱 इमेज</span><span class="chip">🎂 लेयर</span> <span class="chip">📝 Dockerfiles</span><span class="chip">🍽️ compose</span> <span class="chip">👨‍🍳 multi-stage</span><span class="chip">🏦 AWS ECR</span></div>
+</header>
+<div class="vs">
+<div class="vcol" style="border-top: 5px solid #0ea5e9">
+<h3 data-en="🐳 Part 1 — PACK IT (laptop only)">🐳 भाग 1 — पॅक करा (फक्त लॅपटॉप)</h3>
+<ul>
+<li data-en='why containers end "works on my machine"'>कंटेनर "माझ्या मशीनवर चालते" का संपवतात</li>
+<li data-en="images = layer cakes 🎂; the build cache">इमेज = लेयर केक 🎂; build cache</li>
+<li>run, ports, env, logs, volumes, networks</li>
+<li data-en="compose the whole table; multi-stage; hygiene">संपूर्ण टेबल compose करा; multi-stage; स्वच्छता</li>
+</ul>
+</div>
+<div class="vcol" style="border-top: 5px solid #ea580c">
+<h3 data-en="☁️ Part 2 — SHIP IT (registries &amp;amp; ECR)">☁️ भाग 2 — पाठवा (रजिस्ट्री &amp; ECR)</h3>
+<ul>
+<li data-en="registries: the frozen-lunchbox warehouse 🏬">रजिस्ट्री: गोठवलेल्या डब्यांचे गोदाम 🏬</li>
+<li data-en="rent your bank locker: a private ECR repo 🏦">तुमचे बँक लॉकर भाड्याने घ्या: खाजगी ECR रेपो 🏦</li>
+<li data-en="tag → login (12h pass) → push → pull from EKS">tag → login (12 तासांचा पास) → push → EKS वरून pull</li>
+<li data-en="janitor rules, scans, and CI doing it all for you">सफाईचे नियम, scans, आणि CI ते सगळे तुमच्यासाठी करते</li>
+</ul>
+</div>
+</div>
+<h2 data-en="🗺️ The big picture — one diagram, the whole journey" id="big-picture">🗺️ संपूर्ण चित्र — एक आकृती, संपूर्ण प्रवास</h2>
+<p class="sub" data-en='The whole course on one canvas: PACK IT (blue, lessons 1–8) and SHIP IT
+  (orange, lessons 9–12). Click it for the &lt;a href="images/big-picture-4k.png"&gt;4K version&lt;/a&gt; —
+  great as a single reference.'>संपूर्ण कोर्स एका कॅनव्हासवर: पॅक करा (निळा, धडे 1–8) आणि पाठवा (नारिंगी, धडे 9–12). <a href="images/big-picture-4k.png">4K आवृत्तीसाठी</a> क्लिक करा — एकाच संदर्भासाठी उत्तम.</p>
+<figure style="background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:16px">
+<a href="images/big-picture-4k.png"><img alt="The big picture: building Docker images locally, then shipping them to AWS ECR and on to Kubernetes" loading="lazy" src="images/big-picture.svg" style="width:100%;height:auto;border-radius:8px;background:#fff"/></a>
+</figure>
+<h2 data-en="🐳 Part 1 — PACK IT: Docker on your laptop (lessons 1–8)" id="part1">🐳 भाग 1 — पॅक करा: तुमच्या लॅपटॉपवर Docker (धडे 1–8)</h2>
+<p class="sub" data-en="Only Docker Desktop needed — zero cloud, zero cost. One git branch = one idea;
+  branch 07 contains lessons 01–07.">फक्त Docker Desktop लागते — शून्य क्लाउड, शून्य खर्च. एक git ब्रँच = एक कल्पना; ब्रँच 07 मध्ये धडे 01–07 आहेत.</p>
+<div class="grid">
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">1</span><h3 data-en="🍱 Why containers">🍱 कंटेनर का</h3></div><span class="ana" data-en="The packed lunchbox — identical on every machine.">भरलेला डबा — प्रत्येक मशीनवर एकसारखा.</span><code>lesson-01-why-containers</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l01">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">2</span><h3 data-en="🎂 Images &amp;amp; layers">🎂 इमेज &amp; लेयर</h3></div><span class="ana" data-en="A layer cake — unchanged layers come from the cache.">लेयर केक — न बदललेले लेयर cache मधून येतात.</span><code>lesson-02-images-layers</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l02">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">3</span><h3 data-en="📝 The Dockerfile">📝 Dockerfile</h3></div><span class="ana" data-en="The recipe card — seven lines cover 95% of real files.">पाककृतीचे कार्ड — सात ओळी 95% खऱ्या फाइल्स व्यापतात.</span><code>lesson-03-dockerfile</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l03">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">4</span><h3 data-en="🍽️ Running containers">🍽️ कंटेनर चालवणे</h3></div><span class="ana" data-en="Lunch time — ports are the serving window.">जेवणाची वेळ — ports म्हणजे वाढायची खिडकी.</span><code>lesson-04-run-containers</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l04">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">5</span><h3>🧊 Volumes &amp; networks</h3></div><span class="ana" data-en="The shared fridge and the intercom — data and calls by name.">सामायिक फ्रीज आणि इंटरकॉम — नावाने डेटा आणि कॉल.</span><code>lesson-05-volumes-networks</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l05">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">6</span><h3>🍽️🍽️ Docker Compose</h3></div><span class="ana" data-en="Set the whole table with one command.">एका command ने संपूर्ण टेबल लावा.</span><code>lesson-06-docker-compose</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l06">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">7</span><h3>👨‍🍳 Multi-stage builds</h3></div><span class="ana" data-en="Cook in the kitchen, pack only the food — tiny images.">स्वयंपाकघरात शिजवा, फक्त अन्न पॅक करा — छोट्या इमेज.</span><code>lesson-07-multi-stage</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l07">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#0ea5e9"><div class="top"><span class="num">8</span><h3 data-en="🏷️ Image hygiene">🏷️ इमेजची स्वच्छता</h3></div><span class="ana" data-en="Label your boxes; never pack your house keys.">डब्यांवर लेबल लावा; घराच्या किल्ल्या कधीच पॅक करू नका.</span><code>lesson-08-image-hygiene</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l08">आकृती पहा ↗</a></div>
+</div>
+<h2 data-en="☁️ Part 2 — SHIP IT: registries &amp;amp; AWS ECR (lessons 9–12)" id="part2">☁️ भाग 2 — पाठवा: रजिस्ट्री &amp; AWS ECR (धडे 9–12)</h2>
+<p class="sub" data-en="The bridge from laptop to cloud: where images live so that clusters can pull them.
+  Uses a real AWS account (pennies; cleanup shown).">लॅपटॉपपासून क्लाउडपर्यंतचा पूल: clusters ना pull करता याव्यात म्हणून इमेज कुठे राहतात. खरे AWS खाते वापरते (काही पैसे; सफाई दाखवली आहे).</p>
+<div class="grid">
+<div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">9</span><h3 data-en="🏬 Registries">🏬 रजिस्ट्री</h3></div><span class="ana" data-en="The frozen-lunchbox warehouse — push once, pull anywhere.">गोठवलेल्या डब्यांचे गोदाम — एकदा push, कुठूनही pull.</span><code>lesson-09-registries</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l09">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">10</span><h3>🏦 ECR setup</h3></div><span class="ana" data-en="Rent the bank locker; get your 12-hour day pass.">बँक लॉकर भाड्याने घ्या; 12 तासांचा दिवसाचा पास मिळवा.</span><code>lesson-10-ecr-setup</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l10">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">11</span><h3>🧹 Push, pull &amp; lifecycle</h3></div><span class="ana" data-en="File the boxes; the janitor keeps only the newest ten.">डबे लावा; सफाई कामगार फक्त नवीन दहा ठेवतो.</span><code>lesson-11-push-pull-lifecycle</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l11">आकृती पहा ↗</a></div>
+<div class="lesson" style="--c:#ea580c"><div class="top"><span class="num">12</span><h3 data-en="📮 CI to cloud">📮 CI ते क्लाउड</h3></div><span class="ana" data-en="The courier files the copies — and hands off to k8s &amp;amp; ArgoCD.">कुरिअर प्रती लावतो — आणि k8s &amp; ArgoCD कडे सोपवतो.</span><code>lesson-12-ci-to-cloud</code><a class="go" data-en="Read lesson →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">धडा वाचा →</a><a class="go" data-en="See the diagram ↗" href="lesson-diagrams.html#l12">आकृती पहा ↗</a></div>
+</div>
+<pre><code># take the course locally (just Docker Desktop for Part 1):
 git clone https://github.com/BaluRaut/learn-docker-school.git
 cd learn-docker-school
 git checkout lesson-01-why-containers   # then open lessons/01-why-containers/README.md</code></pre>
-
-  <div class="callout">🎓 <b>The school series:</b> 0️⃣ <a href="https://baluraut.github.io/learn-aws-school/">AWS foundations (IAM &amp; EC2)</a> → 1️⃣ this course packs &amp; ships images →
-    2️⃣ <a href="https://baluraut.github.io/learn-kubernetes-school/">Learn Kubernetes School</a> runs
-    them at scale → 3️⃣ <a href="https://baluraut.github.io/learn-argocd-school/">Learn ArgoCD School</a>
-    deploys them automatically, forever. Same style, same analogies universe, same demo-app family.</div>
-
-
-  <h2 id="diagrams">📐 The lesson diagrams — follow the numbers</h2>
-  <p class="sub">Every lesson as one numbered box-and-arrow diagram, one after another —
+<div class="callout" data-en='🎓 &lt;b&gt;The school series:&lt;/b&gt; 0️⃣ &lt;a href="https://baluraut.github.io/learn-aws-school/"&gt;AWS foundations (IAM &amp;amp; EC2)&lt;/a&gt; → 1️⃣ this course packs &amp;amp; ships images →
+    2️⃣ &lt;a href="https://baluraut.github.io/learn-kubernetes-school/"&gt;Learn Kubernetes School&lt;/a&gt; runs
+    them at scale → 3️⃣ &lt;a href="https://baluraut.github.io/learn-argocd-school/"&gt;Learn ArgoCD School&lt;/a&gt;
+    deploys them automatically, forever. Same style, same analogies universe, same demo-app family.'>🎓 <b>शाळांची मालिका:</b> 0️⃣ <a href="https://baluraut.github.io/learn-aws-school/">AWS पाया (IAM &amp; EC2)</a> → 1️⃣ हा कोर्स इमेज पॅक करून पाठवतो → 2️⃣ <a href="https://baluraut.github.io/learn-kubernetes-school/">Learn Kubernetes School</a> त्या मोठ्या प्रमाणावर चालवते → 3️⃣ <a href="https://baluraut.github.io/learn-argocd-school/">Learn ArgoCD School</a> त्या आपोआप deploy करते, कायमचे. तीच शैली, तेच उपमांचे विश्व, तेच डेमो-ॲप कुटुंब.</div>
+<h2 data-en="📐 The lesson diagrams — follow the numbers" id="diagrams">📐 धड्यांच्या आकृत्या — क्रमांक अनुसरा</h2>
+<p class="sub" data-en='Every lesson as one numbered box-and-arrow diagram, one after another —
   readable right here (blue = Docker, orange = ECR). Also on a
-  <a href="lesson-diagrams.html">standalone page</a> with jump navigation.</p>
-
+  &lt;a href="lesson-diagrams.html"&gt;standalone page&lt;/a&gt; with jump navigation.'>प्रत्येक धडा एका क्रमांकित बॉक्स-आणि-बाण आकृतीत, एकामागून एक — इथेच वाचता येईल (निळा = Docker, नारिंगी = ECR). <a href="lesson-diagrams.html">स्वतंत्र पानावरही</a>, उडी-मारण्याच्या दुव्यांसह.</p>
 <!-- 01 -->
 <section class="dsec" id="l01" style="--c:#0ea5e9">
-  <h2><span class="ln">1</span> 🍱 Why containers — the end of "works on my machine"</h2>
-  <p class="d">Pack the app WITH everything it needs; every machine opens the identical box.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="A naked app breaks on other machines; packed as a container it runs identically everywhere">
-    <rect class="dead" x="40" y="50" width="260" height="100" rx="12"/>
-    <text class="t m" x="170" y="85">🧑‍💻 your laptop: works!</text>
-    <text class="s m" x="170" y="110">node 20 installed, all libs there</text>
-    <rect class="dead" x="40" y="180" width="260" height="100" rx="12"/>
-    <text class="t m" x="170" y="215">💥 teammate's laptop: crash</text>
-    <text class="s m" x="170" y="240">node 14, missing libs, wrong path</text>
-    <g transform="translate(320,165)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <text class="s m" x="320" y="200">the naked-app problem</text>
-    <rect class="box" x="400" y="90" width="240" height="150" rx="14"/>
-    <text class="t m" x="520" y="122">🍱 the container</text>
-    <text class="s m" x="520" y="148">app + node 20 + libs + config</text>
-    <text class="s m" x="520" y="170">everything INSIDE the box</text>
-    <text class="s m" x="520" y="196">(shares the host's kernel —</text>
-    <text class="s m" x="520" y="216">way lighter than a VM)</text>
-    <g transform="translate(400,90)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="box" x="720" y="40" width="180" height="70" rx="10"/>
-    <text class="s m" x="810" y="70">💻 laptop A ✅</text>
-    <rect class="box" x="720" y="125" width="180" height="70" rx="10"/>
-    <text class="s m" x="810" y="155">💻 laptop B ✅</text>
-    <rect class="box" x="720" y="210" width="180" height="70" rx="10"/>
-    <text class="s m" x="810" y="240">☁️ AWS server ✅</text>
-    <line class="arr" x1="640" y1="135" x2="716" y2="80"/>
-    <line class="arr" x1="640" y1="165" x2="716" y2="160"/>
-    <line class="arr" x1="640" y1="195" x2="716" y2="240"/>
-    <g transform="translate(678,140)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <text class="s m" x="678" y="280">identical, everywhere</text>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">Read full lesson 01 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;1&lt;/span&gt; 🍱 Why containers — the end of "works on my machine"'><span class="ln">1</span> 🍱 कंटेनर का — "माझ्या मशीनवर चालते" चा शेवट</h2>
+<p class="d" data-en="Pack the app WITH everything it needs; every machine opens the identical box.">ॲप त्याला लागणाऱ्या सगळ्यासह पॅक करा; प्रत्येक मशीन तोच डबा उघडते.</p>
+<svg aria-label="A naked app breaks on other machines; packed as a container it runs identically everywhere" role="img" viewbox="0 0 940 300">
+<rect class="dead" height="100" rx="12" width="260" x="40" y="50"></rect>
+<text class="t m" data-en="🧑‍💻 your laptop: works!" x="170" y="85">🧑‍💻 तुमचा लॅपटॉप: चालते!</text>
+<text class="s m" data-en="node 20 installed, all libs there" x="170" y="110">node 20 installed, सगळ्या libs आहेत</text>
+<rect class="dead" height="100" rx="12" width="260" x="40" y="180"></rect>
+<text class="t m" data-en="💥 teammate's laptop: crash" x="170" y="215">💥 सहकाऱ्याचा लॅपटॉप: crash</text>
+<text class="s m" data-en="node 14, missing libs, wrong path" x="170" y="240">node 14, libs नाहीत, चुकीचा path</text>
+<g transform="translate(320,165)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<text class="s m" data-en="the naked-app problem" x="320" y="200">उघड्या-ॲपची समस्या</text>
+<rect class="box" height="150" rx="14" width="240" x="400" y="90"></rect>
+<text class="t m" data-en="🍱 the container" x="520" y="122">🍱 कंटेनर</text>
+<text class="s m" data-en="app + node 20 + libs + config" x="520" y="148">ॲप + node 20 + libs + config</text>
+<text class="s m" data-en="everything INSIDE the box" x="520" y="170">सगळे डब्याच्या आत</text>
+<text class="s m" data-en="(shares the host's kernel —" x="520" y="196">(host चा kernel वाटून घेतो —</text>
+<text class="s m" data-en="way lighter than a VM)" x="520" y="216">VM पेक्षा खूप हलका)</text>
+<g transform="translate(400,90)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="box" height="70" rx="10" width="180" x="720" y="40"></rect>
+<text class="s m" data-en="💻 laptop A ✅" x="810" y="70">💻 लॅपटॉप A ✅</text>
+<rect class="box" height="70" rx="10" width="180" x="720" y="125"></rect>
+<text class="s m" data-en="💻 laptop B ✅" x="810" y="155">💻 लॅपटॉप B ✅</text>
+<rect class="box" height="70" rx="10" width="180" x="720" y="210"></rect>
+<text class="s m" data-en="☁️ AWS server ✅" x="810" y="240">☁️ AWS सर्व्हर ✅</text>
+<line class="arr" x1="640" x2="716" y1="135" y2="80"></line>
+<line class="arr" x1="640" x2="716" y1="165" y2="160"></line>
+<line class="arr" x1="640" x2="716" y1="195" y2="240"></line>
+<g transform="translate(678,140)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<text class="s m" data-en="identical, everywhere" x="678" y="280">एकसारखे, सगळीकडे</text>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md"&gt;Read full lesson 01 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">संपूर्ण धडा 01 वाचा →</a></p>
 </section>
-
 <!-- 02 -->
 <section class="dsec" id="l02" style="--c:#0ea5e9">
-  <h2><span class="ln">2</span> 🎂 Images &amp; layers — the cake and the cache</h2>
-  <p class="d">Every Dockerfile line bakes one layer; unchanged layers are reused from cache.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Dockerfile lines become stacked layers; changing the top layer reuses all cached layers below">
-    <rect class="box" x="60" y="40" width="300" height="230" rx="14"/>
-    <text class="t m" x="210" y="70">🎂 image = a layer cake</text>
-    <rect class="soft" x="85" y="210" width="250" height="40" rx="8"/>
-    <text class="s m" x="210" y="235">FROM node:20-alpine (pre-baked)</text>
-    <rect class="soft" x="85" y="165" width="250" height="40" rx="8"/>
-    <text class="s m" x="210" y="190">WORKDIR /app</text>
-    <rect class="soft" x="85" y="120" width="250" height="40" rx="8"/>
-    <text class="s m" x="210" y="145">COPY server.js .</text>
-    <rect class="soft" x="85" y="75" width="250" height="40" rx="8"/>
-    <text class="s m" x="210" y="100">CMD ["node","server.js"]</text>
-    <g transform="translate(60,40)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="450" y="40" width="200" height="120" rx="12"/>
-    <text class="t m" x="550" y="75">🔁 build again,</text>
-    <text class="t m" x="550" y="98">nothing changed</text>
-    <text class="s m" x="550" y="128">every layer from cache</text>
-    <text class="s m" x="550" y="146">→ finishes in ~1 second</text>
-    <g transform="translate(450,40)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="box" x="450" y="180" width="200" height="100" rx="12"/>
-    <text class="t m" x="550" y="212">✏️ edit server.js</text>
-    <text class="s m" x="550" y="238">bottom layers: cached ✅</text>
-    <text class="s m" x="550" y="258">COPY + above: rebuilt 🔨</text>
-    <g transform="translate(450,180)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <rect class="soft" x="710" y="90" width="200" height="130" rx="12"/>
-    <text class="t m" x="810" y="122">💡 the trick</text>
-    <text class="s m" x="810" y="148">order lines from</text>
-    <text class="s m" x="810" y="168">rarely-changing (bottom)</text>
-    <text class="s m" x="810" y="188">to often-changing (top)</text>
-    <text class="s m" x="810" y="208">= fast builds forever</text>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">Read full lesson 02 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;2&lt;/span&gt; 🎂 Images &amp;amp; layers — the cake and the cache'><span class="ln">2</span> 🎂 इमेज &amp; लेयर — केक आणि cache</h2>
+<p class="d" data-en="Every Dockerfile line bakes one layer; unchanged layers are reused from cache.">Dockerfile ची प्रत्येक ओळ एक लेयर बनवते; न बदललेले लेयर cache मधून पुन्हा वापरले जातात.</p>
+<svg aria-label="Dockerfile lines become stacked layers; changing the top layer reuses all cached layers below" role="img" viewbox="0 0 940 300">
+<rect class="box" height="230" rx="14" width="300" x="60" y="40"></rect>
+<text class="t m" data-en="🎂 image = a layer cake" x="210" y="70">🎂 इमेज = लेयर केक</text>
+<rect class="soft" height="40" rx="8" width="250" x="85" y="210"></rect>
+<text class="s m" data-en="FROM node:20-alpine (pre-baked)" x="210" y="235">FROM node:20-alpine (आधीच तयार)</text>
+<rect class="soft" height="40" rx="8" width="250" x="85" y="165"></rect>
+<text class="s m" x="210" y="190">WORKDIR /app</text>
+<rect class="soft" height="40" rx="8" width="250" x="85" y="120"></rect>
+<text class="s m" x="210" y="145">COPY server.js .</text>
+<rect class="soft" height="40" rx="8" width="250" x="85" y="75"></rect>
+<text class="s m" x="210" y="100">CMD ["node","server.js"]</text>
+<g transform="translate(60,40)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="120" rx="12" width="200" x="450" y="40"></rect>
+<text class="t m" data-en="🔁 build again," x="550" y="75">🔁 पुन्हा build,</text>
+<text class="t m" data-en="nothing changed" x="550" y="98">काहीच बदलले नाही</text>
+<text class="s m" data-en="every layer from cache" x="550" y="128">प्रत्येक लेयर cache मधून</text>
+<text class="s m" data-en="→ finishes in ~1 second" x="550" y="146">→ ~1 सेकंदात पूर्ण</text>
+<g transform="translate(450,40)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="box" height="100" rx="12" width="200" x="450" y="180"></rect>
+<text class="t m" data-en="✏️ edit server.js" x="550" y="212">✏️ server.js बदला</text>
+<text class="s m" data-en="bottom layers: cached ✅" x="550" y="238">खालचे लेयर: cache ✅</text>
+<text class="s m" data-en="COPY + above: rebuilt 🔨" x="550" y="258">COPY + वरचे: पुन्हा बांधले 🔨</text>
+<g transform="translate(450,180)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<rect class="soft" height="130" rx="12" width="200" x="710" y="90"></rect>
+<text class="t m" data-en="💡 the trick" x="810" y="122">💡 युक्ती</text>
+<text class="s m" data-en="order lines from" x="810" y="148">ओळींचा क्रम</text>
+<text class="s m" data-en="rarely-changing (bottom)" x="810" y="168">क्वचित बदलणाऱ्या (खाली)</text>
+<text class="s m" data-en="to often-changing (top)" x="810" y="188">ते वारंवार बदलणाऱ्या (वर)</text>
+<text class="s m" data-en="= fast builds forever" x="810" y="208">= कायम जलद builds</text>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md"&gt;Read full lesson 02 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-02-images-layers/lessons/02-images-layers/README.md">संपूर्ण धडा 02 वाचा →</a></p>
 </section>
-
 <!-- 03 -->
 <section class="dsec" id="l03" style="--c:#0ea5e9">
-  <h2><span class="ln">3</span> 📝 The Dockerfile — reading the recipe card line by line</h2>
-  <p class="d">Seven instructions cover 95% of real Dockerfiles — this repo's app uses them all.</p>
-  <svg viewBox="0 0 940 330" role="img" aria-label="Each Dockerfile instruction annotated: FROM base, WORKDIR, COPY code in, ENV defaults, EXPOSE docs, USER non-root, CMD on open">
-    <rect class="box" x="50" y="40" width="340" height="260" rx="14"/>
-    <text class="t m" x="220" y="70">📝 app/Dockerfile</text>
-    <text class="s" x="80" y="100">FROM node:20-alpine</text>
-    <text class="s" x="80" y="128">WORKDIR /app</text>
-    <text class="s" x="80" y="156">COPY server.js .</text>
-    <text class="s" x="80" y="184">ENV PORT=3000</text>
-    <text class="s" x="80" y="212">EXPOSE 3000</text>
-    <text class="s" x="80" y="240">USER node</text>
-    <text class="s" x="80" y="268">CMD ["node","server.js"]</text>
-    <rect class="soft" x="480" y="40" width="410" height="55" rx="10"/>
-    <text class="s" x="500" y="63">1️⃣ start from a pre-baked box: tiny Linux + Node</text>
-    <text class="s" x="500" y="83">— you never install Node yourself again</text>
-    <rect class="soft" x="480" y="105" width="410" height="50" rx="10"/>
-    <text class="s" x="500" y="128">2️⃣ COPY puts YOUR code inside the box</text>
-    <text class="s" x="500" y="148">(.dockerignore decides what may enter)</text>
-    <rect class="soft" x="480" y="165" width="410" height="50" rx="10"/>
-    <text class="s" x="500" y="188">3️⃣ ENV = default settings · EXPOSE = documentation</text>
-    <text class="s" x="500" y="208">("this app listens on 3000")</text>
-    <rect class="soft" x="480" y="225" width="410" height="75" rx="10"/>
-    <text class="s" x="500" y="248">4️⃣ USER: don't run as root (lesson 08) · CMD: what</text>
-    <text class="s" x="500" y="268">happens when the box is opened — exactly ONE</text>
-    <text class="s" x="500" y="288">process per container, in the foreground</text>
-    <line class="arr" x1="390" y1="96" x2="476" y2="68"/>
-    <line class="arr" x1="390" y1="152" x2="476" y2="130"/>
-    <line class="arr" x1="390" y1="200" x2="476" y2="190"/>
-    <line class="arr" x1="390" y1="255" x2="476" y2="260"/>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">Read full lesson 03 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;3&lt;/span&gt; 📝 The Dockerfile — reading the recipe card line by line'><span class="ln">3</span> 📝 Dockerfile — पाककृतीचे कार्ड ओळीने वाचणे</h2>
+<p class="d" data-en="Seven instructions cover 95% of real Dockerfiles — this repo's app uses them all.">सात सूचना 95% खऱ्या Dockerfiles व्यापतात — या रेपोचे ॲप त्या सगळ्या वापरते.</p>
+<svg aria-label="Each Dockerfile instruction annotated: FROM base, WORKDIR, COPY code in, ENV defaults, EXPOSE docs, USER non-root, CMD on open" role="img" viewbox="0 0 940 330">
+<rect class="box" height="260" rx="14" width="340" x="50" y="40"></rect>
+<text class="t m" x="220" y="70">📝 app/Dockerfile</text>
+<text class="s" x="80" y="100">FROM node:20-alpine</text>
+<text class="s" x="80" y="128">WORKDIR /app</text>
+<text class="s" x="80" y="156">COPY server.js .</text>
+<text class="s" x="80" y="184">ENV PORT=3000</text>
+<text class="s" x="80" y="212">EXPOSE 3000</text>
+<text class="s" x="80" y="240">USER node</text>
+<text class="s" x="80" y="268">CMD ["node","server.js"]</text>
+<rect class="soft" height="55" rx="10" width="410" x="480" y="40"></rect>
+<text class="s" data-en="1️⃣ start from a pre-baked box: tiny Linux + Node" x="500" y="63">1️⃣ आधीच तयार डब्यापासून सुरुवात: छोटे Linux + Node</text>
+<text class="s" data-en="— you never install Node yourself again" x="500" y="83">— तुम्ही Node पुन्हा कधीच स्वतः install करत नाही</text>
+<rect class="soft" height="50" rx="10" width="410" x="480" y="105"></rect>
+<text class="s" data-en="2️⃣ COPY puts YOUR code inside the box" x="500" y="128">2️⃣ COPY तुमचा कोड डब्याच्या आत ठेवते</text>
+<text class="s" data-en="(.dockerignore decides what may enter)" x="500" y="148">(.dockerignore ठरवते काय आत येऊ शकते)</text>
+<rect class="soft" height="50" rx="10" width="410" x="480" y="165"></rect>
+<text class="s" data-en="3️⃣ ENV = default settings · EXPOSE = documentation" x="500" y="188">3️⃣ ENV = default settings · EXPOSE = दस्तऐवजीकरण</text>
+<text class="s" data-en='("this app listens on 3000")' x="500" y="208">("हे ॲप 3000 वर ऐकते")</text>
+<rect class="soft" height="75" rx="10" width="410" x="480" y="225"></rect>
+<text class="s" data-en="4️⃣ USER: don't run as root (lesson 08) · CMD: what" x="500" y="248">4️⃣ USER: root म्हणून चालवू नका (धडा 08) · CMD: डबा</text>
+<text class="s" data-en="happens when the box is opened — exactly ONE" x="500" y="268">उघडल्यावर काय घडते — प्रत्येक कंटेनरमध्ये नेमकी</text>
+<text class="s" data-en="process per container, in the foreground" x="500" y="288">एक प्रोसेस, foreground मध्ये</text>
+<line class="arr" x1="390" x2="476" y1="96" y2="68"></line>
+<line class="arr" x1="390" x2="476" y1="152" y2="130"></line>
+<line class="arr" x1="390" x2="476" y1="200" y2="190"></line>
+<line class="arr" x1="390" x2="476" y1="255" y2="260"></line>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md"&gt;Read full lesson 03 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-03-dockerfile/lessons/03-dockerfile/README.md">संपूर्ण धडा 03 वाचा →</a></p>
 </section>
-
 <!-- 04 -->
 <section class="dsec" id="l04" style="--c:#0ea5e9">
-  <h2><span class="ln">4</span> 🍽️ Running containers — lunch time</h2>
-  <p class="d">docker run opens the box; ports are the serving window; logs and exec are your eyes and hands.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="docker run creates a container from the image; port mapping connects laptop port to container port; logs, exec and stop manage it">
-    <rect class="box" x="40" y="110" width="180" height="90" rx="12"/>
-    <text class="t m" x="130" y="145">🧊 image</text>
-    <text class="s m" x="130" y="167">hello-school:v1</text>
-    <rect class="box" x="330" y="80" width="300" height="150" rx="14"/>
-    <text class="t m" x="480" y="112">🏃 container</text>
-    <text class="s m" x="480" y="138">node server.js (PID 1)</text>
-    <text class="s m" x="480" y="160">own filesystem, own network</text>
-    <rect class="soft" x="355" y="175" width="250" height="40" rx="8"/>
-    <text class="s m" x="480" y="200">-e APP_VERSION=v2 → settings in</text>
-    <line class="arr" x1="220" y1="155" x2="326" y2="155"/>
-    <g transform="translate(273,138)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <text class="s m" x="273" y="185">docker run</text>
-    <rect class="box" x="720" y="80" width="190" height="80" rx="12"/>
-    <text class="t m" x="815" y="110">🪟 -p 3000:3000</text>
-    <text class="s m" x="815" y="135">laptop:3000 → box:3000</text>
-    <line class="arr" x1="630" y1="120" x2="716" y2="120"/>
-    <g transform="translate(673,103)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="soft" x="330" y="250" width="140" height="40" rx="8"/>
-    <text class="s m" x="400" y="275">📜 docker logs</text>
-    <rect class="soft" x="490" y="250" width="140" height="40" rx="8"/>
-    <text class="s m" x="560" y="275">🔧 docker exec</text>
-    <g transform="translate(310,270)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <rect class="soft" x="650" y="250" width="260" height="40" rx="8"/>
-    <text class="s m" x="780" y="275">🛑 docker stop → SIGTERM, clean exit</text>
-    <g transform="translate(650,250)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">Read full lesson 04 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;4&lt;/span&gt; 🍽️ Running containers — lunch time'><span class="ln">4</span> 🍽️ कंटेनर चालवणे — जेवणाची वेळ</h2>
+<p class="d" data-en="docker run opens the box; ports are the serving window; logs and exec are your eyes and hands.">docker run डबा उघडते; ports म्हणजे वाढायची खिडकी; logs आणि exec म्हणजे तुमचे डोळे आणि हात.</p>
+<svg aria-label="docker run creates a container from the image; port mapping connects laptop port to container port; logs, exec and stop manage it" role="img" viewbox="0 0 940 300">
+<rect class="box" height="90" rx="12" width="180" x="40" y="110"></rect>
+<text class="t m" data-en="🧊 image" x="130" y="145">🧊 इमेज</text>
+<text class="s m" x="130" y="167">hello-school:v1</text>
+<rect class="box" height="150" rx="14" width="300" x="330" y="80"></rect>
+<text class="t m" data-en="🏃 container" x="480" y="112">🏃 कंटेनर</text>
+<text class="s m" x="480" y="138">node server.js (PID 1)</text>
+<text class="s m" data-en="own filesystem, own network" x="480" y="160">स्वतःची filesystem, स्वतःचे network</text>
+<rect class="soft" height="40" rx="8" width="250" x="355" y="175"></rect>
+<text class="s m" data-en="-e APP_VERSION=v2 → settings in" x="480" y="200">-e APP_VERSION=v2 → settings आत</text>
+<line class="arr" x1="220" x2="326" y1="155" y2="155"></line>
+<g transform="translate(273,138)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<text class="s m" x="273" y="185">docker run</text>
+<rect class="box" height="80" rx="12" width="190" x="720" y="80"></rect>
+<text class="t m" x="815" y="110">🪟 -p 3000:3000</text>
+<text class="s m" data-en="laptop:3000 → box:3000" x="815" y="135">लॅपटॉप:3000 → डबा:3000</text>
+<line class="arr" x1="630" x2="716" y1="120" y2="120"></line>
+<g transform="translate(673,103)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="soft" height="40" rx="8" width="140" x="330" y="250"></rect>
+<text class="s m" x="400" y="275">📜 docker logs</text>
+<rect class="soft" height="40" rx="8" width="140" x="490" y="250"></rect>
+<text class="s m" x="560" y="275">🔧 docker exec</text>
+<g transform="translate(310,270)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<rect class="soft" height="40" rx="8" width="260" x="650" y="250"></rect>
+<text class="s m" data-en="🛑 docker stop → SIGTERM, clean exit" x="780" y="275">🛑 docker stop → SIGTERM, स्वच्छ शेवट</text>
+<g transform="translate(650,250)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md"&gt;Read full lesson 04 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-04-run-containers/lessons/04-run-containers/README.md">संपूर्ण धडा 04 वाचा →</a></p>
 </section>
-
 <!-- 05 -->
 <section class="dsec" id="l05" style="--c:#0ea5e9">
-  <h2><span class="ln">5</span> 🧊📞 Volumes &amp; networks — the shared fridge and the intercom</h2>
-  <p class="d">Containers are disposable; volumes make data survive. Networks let containers call each other by NAME.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Two containers on one network talk by name; a volume outside the containers keeps data when they are removed">
-    <rect class="soft" x="40" y="50" width="560" height="200" rx="14"/>
-    <text class="t m" x="320" y="80">📞 docker network — the intercom</text>
-    <rect class="box" x="70" y="100" width="220" height="110" rx="12"/>
-    <text class="t m" x="180" y="135">📦 container "web"</text>
-    <text class="s m" x="180" y="160">the app</text>
-    <rect class="box" x="330" y="100" width="220" height="110" rx="12"/>
-    <text class="t m" x="440" y="135">📦 container "proxy"</text>
-    <text class="s m" x="440" y="160">calls http://web:3000</text>
-    <line class="arr" x1="330" y1="155" x2="294" y2="155"/>
-    <g transform="translate(312,135)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <text class="s m" x="320" y="235">a NAME, not an IP — Docker DNS resolves it (k8s Services say hi 👋)</text>
-    <rect class="box" x="660" y="60" width="240" height="100" rx="12"/>
-    <text class="t m" x="780" y="92">🧊 volume — the fridge</text>
-    <text class="s m" x="780" y="115">lives OUTSIDE containers,</text>
-    <text class="s m" x="780" y="135">survives docker rm 💪</text>
-    <g transform="translate(660,60)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="box" x="660" y="180" width="240" height="90" rx="12"/>
-    <text class="t m" x="780" y="210">📂 bind mount</text>
-    <text class="s m" x="780" y="233">a laptop folder mapped in —</text>
-    <text class="s m" x="780" y="253">live-edit code &amp; config</text>
-    <g transform="translate(660,180)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">Read full lesson 05 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;5&lt;/span&gt; 🧊📞 Volumes &amp;amp; networks — the shared fridge and the intercom'><span class="ln">5</span> 🧊📞 Volumes &amp; networks — सामायिक फ्रीज आणि इंटरकॉम</h2>
+<p class="d" data-en="Containers are disposable; volumes make data survive. Networks let containers call each other by NAME.">कंटेनर टाकाऊ आहेत; volumes डेटा टिकवतात. Networks कंटेनरना एकमेकांना नावाने कॉल करू देतात.</p>
+<svg aria-label="Two containers on one network talk by name; a volume outside the containers keeps data when they are removed" role="img" viewbox="0 0 940 300">
+<rect class="soft" height="200" rx="14" width="560" x="40" y="50"></rect>
+<text class="t m" data-en="📞 docker network — the intercom" x="320" y="80">📞 docker network — इंटरकॉम</text>
+<rect class="box" height="110" rx="12" width="220" x="70" y="100"></rect>
+<text class="t m" data-en='📦 container "web"' x="180" y="135">📦 कंटेनर "web"</text>
+<text class="s m" data-en="the app" x="180" y="160">ॲप</text>
+<rect class="box" height="110" rx="12" width="220" x="330" y="100"></rect>
+<text class="t m" data-en='📦 container "proxy"' x="440" y="135">📦 कंटेनर "proxy"</text>
+<text class="s m" data-en="calls http://web:3000" x="440" y="160">http://web:3000 ला कॉल करतो</text>
+<line class="arr" x1="330" x2="294" y1="155" y2="155"></line>
+<g transform="translate(312,135)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<text class="s m" data-en="a NAME, not an IP — Docker DNS resolves it (k8s Services say hi 👋)" x="320" y="235">IP नव्हे, नाव — Docker DNS ते सोडवते (k8s Services नमस्कार म्हणतात 👋)</text>
+<rect class="box" height="100" rx="12" width="240" x="660" y="60"></rect>
+<text class="t m" data-en="🧊 volume — the fridge" x="780" y="92">🧊 volume — फ्रीज</text>
+<text class="s m" data-en="lives OUTSIDE containers," x="780" y="115">कंटेनरच्या बाहेर राहतो,</text>
+<text class="s m" data-en="survives docker rm 💪" x="780" y="135">docker rm नंतरही टिकतो 💪</text>
+<g transform="translate(660,60)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="box" height="90" rx="12" width="240" x="660" y="180"></rect>
+<text class="t m" x="780" y="210">📂 bind mount</text>
+<text class="s m" data-en="a laptop folder mapped in —" x="780" y="233">लॅपटॉपचा फोल्डर आत जोडलेला —</text>
+<text class="s m" data-en="live-edit code &amp;amp; config" x="780" y="253">कोड &amp; config थेट बदला</text>
+<g transform="translate(660,180)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md"&gt;Read full lesson 05 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-05-volumes-networks/lessons/05-volumes-networks/README.md">संपूर्ण धडा 05 वाचा →</a></p>
 </section>
-
 <!-- 06 -->
 <section class="dsec" id="l06" style="--c:#0ea5e9">
-  <h2><span class="ln">6</span> 🍽️🍽️ Docker Compose — set the whole table with one command</h2>
-  <p class="d">One YAML file describes every service; docker compose up builds and starts them all, wired together.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="compose.yml declares web and proxy; compose up creates both on a shared network with only the proxy exposed">
-    <rect class="box" x="40" y="80" width="230" height="140" rx="12"/>
-    <text class="t m" x="155" y="112">📄 compose.yml</text>
-    <text class="s m" x="155" y="138">web: build ./app</text>
-    <text class="s m" x="155" y="160">proxy: nginx + config</text>
-    <text class="s m" x="155" y="182">ports: 8080:80</text>
-    <g transform="translate(40,80)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="soft" x="360" y="50" width="550" height="210" rx="14"/>
-    <text class="t m" x="635" y="80">🍽️ the table — one shared network</text>
-    <rect class="box" x="390" y="100" width="220" height="110" rx="12"/>
-    <text class="t m" x="500" y="132">📦 web</text>
-    <text class="s m" x="500" y="155">the app · NOT exposed</text>
-    <text class="s m" x="500" y="177">reachable only by name</text>
-    <rect class="box" x="650" y="100" width="230" height="110" rx="12"/>
-    <text class="t m" x="765" y="132">📦 proxy</text>
-    <text class="s m" x="765" y="155">nginx → http://web:3000</text>
-    <text class="s m" x="765" y="177">🪟 the ONLY door: :8080</text>
-    <line class="arr" x1="650" y1="155" x2="614" y2="155"/>
-    <g transform="translate(632,135)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <line class="arr" x1="270" y1="150" x2="356" y2="150"/>
-    <g transform="translate(313,133)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <text class="s m" x="313" y="180">compose up --build</text>
-    <text class="s m" x="635" y="240">one command up · one command down (docker compose down) · same file works on every teammate's laptop</text>
-    <g transform="translate(360,260)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">Read full lesson 06 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;6&lt;/span&gt; 🍽️🍽️ Docker Compose — set the whole table with one command'><span class="ln">6</span> 🍽️🍽️ Docker Compose — एका command ने संपूर्ण टेबल लावा</h2>
+<p class="d" data-en="One YAML file describes every service; docker compose up builds and starts them all, wired together.">एक YAML फाइल प्रत्येक service वर्णन करते; docker compose up त्या सगळ्या बांधून सुरू करते, एकमेकांशी जोडून.</p>
+<svg aria-label="compose.yml declares web and proxy; compose up creates both on a shared network with only the proxy exposed" role="img" viewbox="0 0 940 300">
+<rect class="box" height="140" rx="12" width="230" x="40" y="80"></rect>
+<text class="t m" x="155" y="112">📄 compose.yml</text>
+<text class="s m" x="155" y="138">web: build ./app</text>
+<text class="s m" x="155" y="160">proxy: nginx + config</text>
+<text class="s m" x="155" y="182">ports: 8080:80</text>
+<g transform="translate(40,80)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="soft" height="210" rx="14" width="550" x="360" y="50"></rect>
+<text class="t m" data-en="🍽️ the table — one shared network" x="635" y="80">🍽️ टेबल — एक सामायिक network</text>
+<rect class="box" height="110" rx="12" width="220" x="390" y="100"></rect>
+<text class="t m" x="500" y="132">📦 web</text>
+<text class="s m" data-en="the app · NOT exposed" x="500" y="155">ॲप · उघड नाही</text>
+<text class="s m" data-en="reachable only by name" x="500" y="177">फक्त नावाने पोहोचता येते</text>
+<rect class="box" height="110" rx="12" width="230" x="650" y="100"></rect>
+<text class="t m" x="765" y="132">📦 proxy</text>
+<text class="s m" x="765" y="155">nginx → http://web:3000</text>
+<text class="s m" data-en="🪟 the ONLY door: :8080" x="765" y="177">🪟 एकमेव दार: :8080</text>
+<line class="arr" x1="650" x2="614" y1="155" y2="155"></line>
+<g transform="translate(632,135)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<line class="arr" x1="270" x2="356" y1="150" y2="150"></line>
+<g transform="translate(313,133)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<text class="s m" x="313" y="180">compose up --build</text>
+<text class="s m" data-en="one command up · one command down (docker compose down) · same file works on every teammate's laptop" x="635" y="240">एक command वर · एक command खाली (docker compose down) · तीच फाइल प्रत्येक सहकाऱ्याच्या लॅपटॉपवर चालते</text>
+<g transform="translate(360,260)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md"&gt;Read full lesson 06 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-06-docker-compose/lessons/06-docker-compose/README.md">संपूर्ण धडा 06 वाचा →</a></p>
 </section>
-
 <!-- 07 -->
 <section class="dsec" id="l07" style="--c:#0ea5e9">
-  <h2><span class="ln">7</span> 👨‍🍳 Multi-stage builds — cook in the kitchen, pack only the food</h2>
-  <p class="d">Build tools live in a throwaway stage; only the result ships. Images shrink dramatically.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="A builder stage with all tools produces artifacts; only those are copied into a small final image; the kitchen is discarded">
-    <rect class="dead" x="50" y="60" width="330" height="180" rx="14"/>
-    <text class="t m" x="215" y="92">👨‍🍳 stage 1: the KITCHEN</text>
-    <text class="s m" x="215" y="118">FROM node:20-alpine AS builder</text>
-    <text class="s m" x="215" y="140">node + tools + source (~180MB)</text>
-    <rect class="soft" x="80" y="160" width="270" height="45" rx="8"/>
-    <text class="s m" x="215" y="188">RUN node generate.js → index.html</text>
-    <text class="s m" x="215" y="228">🗑️ thrown away after the build</text>
-    <g transform="translate(50,60)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="520" y="60" width="330" height="180" rx="14"/>
-    <text class="t m" x="685" y="92">🍱 stage 2: the LUNCHBOX</text>
-    <text class="s m" x="685" y="118">FROM nginx:alpine (~50MB)</text>
-    <rect class="soft" x="550" y="135" width="270" height="45" rx="8"/>
-    <text class="s m" x="685" y="163">COPY --from=builder index.html</text>
-    <text class="s m" x="685" y="205">no node, no tools, no source —</text>
-    <text class="s m" x="685" y="225">just the result. THIS ships. 🚀</text>
-    <g transform="translate(520,60)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <line class="arr" x1="380" y1="150" x2="516" y2="150"/>
-    <g transform="translate(448,133)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <text class="s m" x="448" y="180">only the food crosses</text>
-    <text class="s m" x="470" y="280">smaller image = faster pushes/pulls (lesson 11), fewer things to attack (lesson 08)</text>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">Read full lesson 07 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;7&lt;/span&gt; 👨‍🍳 Multi-stage builds — cook in the kitchen, pack only the food'><span class="ln">7</span> 👨‍🍳 Multi-stage builds — स्वयंपाकघरात शिजवा, फक्त अन्न पॅक करा</h2>
+<p class="d" data-en="Build tools live in a throwaway stage; only the result ships. Images shrink dramatically.">build साधने टाकाऊ stage मध्ये राहतात; फक्त निकाल पाठवला जातो. इमेज प्रचंड लहान होतात.</p>
+<svg aria-label="A builder stage with all tools produces artifacts; only those are copied into a small final image; the kitchen is discarded" role="img" viewbox="0 0 940 300">
+<rect class="dead" height="180" rx="14" width="330" x="50" y="60"></rect>
+<text class="t m" data-en="👨‍🍳 stage 1: the KITCHEN" x="215" y="92">👨‍🍳 stage 1: स्वयंपाकघर</text>
+<text class="s m" x="215" y="118">FROM node:20-alpine AS builder</text>
+<text class="s m" data-en="node + tools + source (~180MB)" x="215" y="140">node + साधने + source (~180MB)</text>
+<rect class="soft" height="45" rx="8" width="270" x="80" y="160"></rect>
+<text class="s m" x="215" y="188">RUN node generate.js → index.html</text>
+<text class="s m" data-en="🗑️ thrown away after the build" x="215" y="228">🗑️ build नंतर टाकून दिले</text>
+<g transform="translate(50,60)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="180" rx="14" width="330" x="520" y="60"></rect>
+<text class="t m" data-en="🍱 stage 2: the LUNCHBOX" x="685" y="92">🍱 stage 2: डबा</text>
+<text class="s m" x="685" y="118">FROM nginx:alpine (~50MB)</text>
+<rect class="soft" height="45" rx="8" width="270" x="550" y="135"></rect>
+<text class="s m" x="685" y="163">COPY --from=builder index.html</text>
+<text class="s m" data-en="no node, no tools, no source —" x="685" y="205">node नाही, साधने नाहीत, source नाही —</text>
+<text class="s m" data-en="just the result. THIS ships. 🚀" x="685" y="225">फक्त निकाल. हेच पाठवले जाते. 🚀</text>
+<g transform="translate(520,60)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<line class="arr" x1="380" x2="516" y1="150" y2="150"></line>
+<g transform="translate(448,133)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<text class="s m" data-en="only the food crosses" x="448" y="180">फक्त अन्न पलीकडे जाते</text>
+<text class="s m" data-en="smaller image = faster pushes/pulls (lesson 11), fewer things to attack (lesson 08)" x="470" y="280">लहान इमेज = जलद push/pull (धडा 11), हल्ला करण्यासारखे कमी (धडा 08)</text>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md"&gt;Read full lesson 07 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-07-multi-stage/lessons/07-multi-stage/README.md">संपूर्ण धडा 07 वाचा →</a></p>
 </section>
-
 <!-- 08 -->
 <section class="dsec" id="l08" style="--c:#0ea5e9">
-  <h2><span class="ln">8</span> 🏷️ Image hygiene — label your boxes, don't pack your keys</h2>
-  <p class="d">The four habits that separate hobby images from production images.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Four hygiene rules: real tags not latest, dockerignore, non-root user, small base images">
-    <rect class="box" x="50" y="50" width="410" height="100" rx="12"/>
-    <text class="t m" x="255" y="82">🏷️ 1 · real tags, never :latest in prod</text>
-    <text class="s m" x="255" y="108">hello-school:v1 / :git-sha — ":latest" is a</text>
-    <text class="s m" x="255" y="128">floating label; you can't roll back to "latest"</text>
-    <g transform="translate(50,50)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="490" y="50" width="410" height="100" rx="12"/>
-    <text class="t m" x="695" y="82">🙈 2 · .dockerignore everything private</text>
-    <text class="s m" x="695" y="108">.git, .env, node_modules, logs — COPY can't</text>
-    <text class="s m" x="695" y="128">leak what it cannot see</text>
-    <g transform="translate(490,50)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="box" x="50" y="170" width="410" height="100" rx="12"/>
-    <text class="t m" x="255" y="202">👤 3 · USER node — never run as root</text>
-    <text class="s m" x="255" y="228">a break-in to a root container is a break-in</text>
-    <text class="s m" x="255" y="248">to the machine; drop privileges in the image</text>
-    <g transform="translate(50,170)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <rect class="box" x="490" y="170" width="410" height="100" rx="12"/>
-    <text class="t m" x="695" y="202">🪶 4 · small base images (alpine/slim)</text>
-    <text class="s m" x="695" y="228">node:20 ≈ 1.1GB vs node:20-alpine ≈ 180MB —</text>
-    <text class="s m" x="695" y="248">less to pull, less to patch, less to attack</text>
-    <g transform="translate(490,170)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">Read full lesson 08 →</a></p>
+<h2 data-en="&lt;span class=&quot;ln&quot;&gt;8&lt;/span&gt; 🏷️ Image hygiene — label your boxes, don't pack your keys"><span class="ln">8</span> 🏷️ इमेजची स्वच्छता — डब्यांवर लेबल लावा, किल्ल्या पॅक करू नका</h2>
+<p class="d" data-en="The four habits that separate hobby images from production images.">हौशी इमेज आणि production इमेज यांना वेगळ्या करणाऱ्या चार सवयी.</p>
+<svg aria-label="Four hygiene rules: real tags not latest, dockerignore, non-root user, small base images" role="img" viewbox="0 0 940 300">
+<rect class="box" height="100" rx="12" width="410" x="50" y="50"></rect>
+<text class="t m" data-en="🏷️ 1 · real tags, never :latest in prod" x="255" y="82">🏷️ 1 · खरे tags, prod मध्ये कधीच :latest नाही</text>
+<text class="s m" data-en='hello-school:v1 / :git-sha — ":latest" is a' x="255" y="108">hello-school:v1 / :git-sha — ":latest" म्हणजे</text>
+<text class="s m" data-en="floating label; you can't roll back to &quot;latest&quot;" x="255" y="128">तरंगते लेबल; "latest" वर rollback करता येत नाही</text>
+<g transform="translate(50,50)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="100" rx="12" width="410" x="490" y="50"></rect>
+<text class="t m" data-en="🙈 2 · .dockerignore everything private" x="695" y="82">🙈 2 · खाजगी सगळे .dockerignore करा</text>
+<text class="s m" data-en=".git, .env, node_modules, logs — COPY can't" x="695" y="108">.git, .env, node_modules, logs — जे COPY ला</text>
+<text class="s m" data-en="leak what it cannot see" x="695" y="128">दिसतच नाही ते गळू शकत नाही</text>
+<g transform="translate(490,50)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="box" height="100" rx="12" width="410" x="50" y="170"></rect>
+<text class="t m" data-en="👤 3 · USER node — never run as root" x="255" y="202">👤 3 · USER node — root म्हणून कधीच चालवू नका</text>
+<text class="s m" data-en="a break-in to a root container is a break-in" x="255" y="228">root कंटेनरमध्ये घुसखोरी म्हणजे घुसखोरी</text>
+<text class="s m" data-en="to the machine; drop privileges in the image" x="255" y="248">मशीनमध्ये घुसखोरी; इमेजमध्येच अधिकार कमी करा</text>
+<g transform="translate(50,170)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<rect class="box" height="100" rx="12" width="410" x="490" y="170"></rect>
+<text class="t m" data-en="🪶 4 · small base images (alpine/slim)" x="695" y="202">🪶 4 · छोट्या base इमेज (alpine/slim)</text>
+<text class="s m" data-en="node:20 ≈ 1.1GB vs node:20-alpine ≈ 180MB —" x="695" y="228">node:20 ≈ 1.1GB विरुद्ध node:20-alpine ≈ 180MB —</text>
+<text class="s m" data-en="less to pull, less to patch, less to attack" x="695" y="248">ओढायला कमी, patch करायला कमी, हल्ल्याला कमी</text>
+<g transform="translate(490,170)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md"&gt;Read full lesson 08 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-08-image-hygiene/lessons/08-image-hygiene/README.md">संपूर्ण धडा 08 वाचा →</a></p>
 </section>
-
 <!-- 09 -->
 <section class="dsec" id="l09" style="--c:#ea580c">
-  <h2><span class="ln">9</span> 🏬 Registries — the frozen-lunchbox warehouse</h2>
-  <p class="d">A registry stores images so OTHER machines can pull them — the bridge from laptop to cloud.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Laptop pushes an image to a registry repository; servers and clusters pull it; tags name versions, digests fingerprint them">
-    <rect class="box" x="40" y="110" width="200" height="90" rx="12"/>
-    <text class="t m" x="140" y="145">🧑‍💻 your laptop</text>
-    <text class="s m" x="140" y="167">image built locally</text>
-    <rect class="box" x="340" y="60" width="300" height="190" rx="14"/>
-    <text class="t m" x="490" y="92">🏬 registry — the warehouse</text>
-    <rect class="soft" x="365" y="110" width="250" height="55" rx="8"/>
-    <text class="s m" x="490" y="133">📚 repository: hello-school</text>
-    <text class="s m" x="490" y="153">shelf for ONE app's versions</text>
-    <rect class="soft" x="365" y="175" width="250" height="55" rx="8"/>
-    <text class="s m" x="490" y="198">🏷️ tags: v1, v2, abc123…</text>
-    <text class="s m" x="490" y="218">🔢 digest = tamper-proof fingerprint</text>
-    <line class="arr" x1="240" y1="155" x2="336" y2="155"/>
-    <g transform="translate(288,138)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <text class="s m" x="288" y="185">docker push</text>
-    <rect class="box" x="740" y="60" width="170" height="70" rx="12"/>
-    <text class="s m" x="825" y="90">☸️ EKS cluster</text>
-    <text class="s m" x="825" y="110">pulls at deploy</text>
-    <rect class="box" x="740" y="150" width="170" height="70" rx="12"/>
-    <text class="s m" x="825" y="180">💻 teammate</text>
-    <text class="s m" x="825" y="200">docker pull</text>
-    <line class="arr" x1="640" y1="130" x2="736" y2="95"/>
-    <line class="arr" x1="640" y1="180" x2="736" y2="185"/>
-    <g transform="translate(688,140)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <text class="s m" x="475" y="285">Docker Hub = the public warehouse · ECR = your company's private one (next lesson)</text>
-    <g transform="translate(150,285)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">Read full lesson 09 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;9&lt;/span&gt; 🏬 Registries — the frozen-lunchbox warehouse'><span class="ln">9</span> 🏬 रजिस्ट्री — गोठवलेल्या डब्यांचे गोदाम</h2>
+<p class="d" data-en="A registry stores images so OTHER machines can pull them — the bridge from laptop to cloud.">रजिस्ट्री इमेज साठवते जेणेकरून इतर मशीन त्या pull करू शकतील — लॅपटॉपपासून क्लाउडपर्यंतचा पूल.</p>
+<svg aria-label="Laptop pushes an image to a registry repository; servers and clusters pull it; tags name versions, digests fingerprint them" role="img" viewbox="0 0 940 300">
+<rect class="box" height="90" rx="12" width="200" x="40" y="110"></rect>
+<text class="t m" data-en="🧑‍💻 your laptop" x="140" y="145">🧑‍💻 तुमचा लॅपटॉप</text>
+<text class="s m" data-en="image built locally" x="140" y="167">स्थानिक बांधलेली इमेज</text>
+<rect class="box" height="190" rx="14" width="300" x="340" y="60"></rect>
+<text class="t m" data-en="🏬 registry — the warehouse" x="490" y="92">🏬 रजिस्ट्री — गोदाम</text>
+<rect class="soft" height="55" rx="8" width="250" x="365" y="110"></rect>
+<text class="s m" x="490" y="133">📚 repository: hello-school</text>
+<text class="s m" data-en="shelf for ONE app's versions" x="490" y="153">एका ॲपच्या आवृत्त्यांचे कपाट</text>
+<rect class="soft" height="55" rx="8" width="250" x="365" y="175"></rect>
+<text class="s m" x="490" y="198">🏷️ tags: v1, v2, abc123…</text>
+<text class="s m" data-en="🔢 digest = tamper-proof fingerprint" x="490" y="218">🔢 digest = बदलता न येणारे fingerprint</text>
+<line class="arr" x1="240" x2="336" y1="155" y2="155"></line>
+<g transform="translate(288,138)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<text class="s m" x="288" y="185">docker push</text>
+<rect class="box" height="70" rx="12" width="170" x="740" y="60"></rect>
+<text class="s m" x="825" y="90">☸️ EKS cluster</text>
+<text class="s m" data-en="pulls at deploy" x="825" y="110">deploy च्या वेळी pull करतो</text>
+<rect class="box" height="70" rx="12" width="170" x="740" y="150"></rect>
+<text class="s m" data-en="💻 teammate" x="825" y="180">💻 सहकारी</text>
+<text class="s m" x="825" y="200">docker pull</text>
+<line class="arr" x1="640" x2="736" y1="130" y2="95"></line>
+<line class="arr" x1="640" x2="736" y1="180" y2="185"></line>
+<g transform="translate(688,140)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<text class="s m" data-en="Docker Hub = the public warehouse · ECR = your company's private one (next lesson)" x="475" y="285">Docker Hub = सार्वजनिक गोदाम · ECR = तुमच्या कंपनीचे खाजगी गोदाम (पुढचा धडा)</text>
+<g transform="translate(150,285)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md"&gt;Read full lesson 09 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-09-registries/lessons/09-registries/README.md">संपूर्ण धडा 09 वाचा →</a></p>
 </section>
-
 <!-- 10 -->
 <section class="dsec" id="l10" style="--c:#ea580c">
-  <h2><span class="ln">10</span> 🏦 ECR setup — renting the bank locker</h2>
-  <p class="d">Create a private repository once; get a fresh 12-hour pass whenever you visit.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Terraform or the CLI creates the ECR repository; get-login-password issues a 12-hour token used by docker login">
-    <rect class="box" x="40" y="60" width="240" height="100" rx="12"/>
-    <text class="t m" x="160" y="92">🏗️ rent the locker (once)</text>
-    <text class="s m" x="160" y="115">terraform apply (ecr/ecr.tf)</text>
-    <text class="s m" x="160" y="137">or: aws ecr create-repository</text>
-    <g transform="translate(40,60)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="380" y="40" width="520" height="140" rx="14"/>
-    <text class="t m" x="640" y="72">☁️ AWS — ECR</text>
-    <rect class="soft" x="410" y="90" width="460" height="70" rx="10"/>
-    <text class="s m" x="640" y="118">🔐 repository: hello-school (private)</text>
-    <text class="s m" x="640" y="140">address: ACCOUNT.dkr.ecr.REGION.amazonaws.com/hello-school</text>
-    <line class="arr" x1="280" y1="110" x2="376" y2="110"/>
-    <rect class="box" x="40" y="190" width="240" height="90" rx="12"/>
-    <text class="t m" x="160" y="220">🎫 the 12-hour day pass</text>
-    <text class="s m" x="160" y="243">aws ecr get-login-password</text>
-    <text class="s m" x="160" y="263">| docker login …</text>
-    <g transform="translate(40,190)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <line class="arr" x1="280" y1="230" x2="440" y2="185"/>
-    <g transform="translate(360,222)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <text class="s m" x="380" y="260">now docker push/pull may enter</text>
-    <text class="s m" x="640" y="230">🔑 who may enter at all = IAM (your AWS user/role</text>
-    <text class="s m" x="640" y="252">needs ecr:* permissions — the bank checks ID first)</text>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">Read full lesson 10 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;10&lt;/span&gt; 🏦 ECR setup — renting the bank locker'><span class="ln">10</span> 🏦 ECR setup — बँक लॉकर भाड्याने घेणे</h2>
+<p class="d" data-en="Create a private repository once; get a fresh 12-hour pass whenever you visit.">खाजगी repository एकदा बनवा; प्रत्येक भेटीला नवा 12 तासांचा पास घ्या.</p>
+<svg aria-label="Terraform or the CLI creates the ECR repository; get-login-password issues a 12-hour token used by docker login" role="img" viewbox="0 0 940 300">
+<rect class="box" height="100" rx="12" width="240" x="40" y="60"></rect>
+<text class="t m" data-en="🏗️ rent the locker (once)" x="160" y="92">🏗️ लॉकर भाड्याने घ्या (एकदा)</text>
+<text class="s m" x="160" y="115">terraform apply (ecr/ecr.tf)</text>
+<text class="s m" data-en="or: aws ecr create-repository" x="160" y="137">किंवा: aws ecr create-repository</text>
+<g transform="translate(40,60)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="140" rx="14" width="520" x="380" y="40"></rect>
+<text class="t m" x="640" y="72">☁️ AWS — ECR</text>
+<rect class="soft" height="70" rx="10" width="460" x="410" y="90"></rect>
+<text class="s m" data-en="🔐 repository: hello-school (private)" x="640" y="118">🔐 repository: hello-school (खाजगी)</text>
+<text class="s m" data-en="address: ACCOUNT.dkr.ecr.REGION.amazonaws.com/hello-school" x="640" y="140">पत्ता: ACCOUNT.dkr.ecr.REGION.amazonaws.com/hello-school</text>
+<line class="arr" x1="280" x2="376" y1="110" y2="110"></line>
+<rect class="box" height="90" rx="12" width="240" x="40" y="190"></rect>
+<text class="t m" data-en="🎫 the 12-hour day pass" x="160" y="220">🎫 12 तासांचा दिवसाचा पास</text>
+<text class="s m" x="160" y="243">aws ecr get-login-password</text>
+<text class="s m" x="160" y="263">| docker login …</text>
+<g transform="translate(40,190)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<line class="arr" x1="280" x2="440" y1="230" y2="185"></line>
+<g transform="translate(360,222)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<text class="s m" data-en="now docker push/pull may enter" x="380" y="260">आता docker push/pull आत जाऊ शकतात</text>
+<text class="s m" data-en="🔑 who may enter at all = IAM (your AWS user/role" x="640" y="230">🔑 आत कोण येऊ शकते हे = IAM (तुमच्या AWS user/role ला</text>
+<text class="s m" data-en="needs ecr:* permissions — the bank checks ID first)" x="640" y="252">ecr:* परवानग्या लागतात — बँक आधी ओळखपत्र तपासते)</text>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md"&gt;Read full lesson 10 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-10-ecr-setup/lessons/10-ecr-setup/README.md">संपूर्ण धडा 10 वाचा →</a></p>
 </section>
-
 <!-- 11 -->
 <section class="dsec" id="l11" style="--c:#ea580c">
-  <h2><span class="ln">11</span> 🧹 Push, pull &amp; lifecycle — filing boxes and the janitor</h2>
-  <p class="d">The tag IS the address; push files the box, EKS pulls it, the janitor keeps the locker tidy.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Tag the local image with the full ECR address, push it, the cluster pulls it, and a lifecycle policy expires old images">
-    <rect class="box" x="40" y="50" width="260" height="90" rx="12"/>
-    <text class="t m" x="170" y="80">🏷️ address the box</text>
-    <text class="s m" x="170" y="102">docker tag hello-school:v1 \</text>
-    <text class="s m" x="170" y="122">ACCOUNT.dkr…/hello-school:v1</text>
-    <g transform="translate(40,50)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="400" y="50" width="240" height="200" rx="14"/>
-    <text class="t m" x="520" y="82">🏦 ECR locker</text>
-    <rect class="soft" x="425" y="100" width="190" height="40" rx="8"/>
-    <text class="s m" x="520" y="125">📦 v3 (newest)</text>
-    <rect class="soft" x="425" y="150" width="190" height="40" rx="8"/>
-    <text class="s m" x="520" y="175">📦 v2</text>
-    <rect class="dead" x="425" y="200" width="190" height="40" rx="8"/>
-    <text class="s m" x="520" y="225">📦 v-old… expired 🧹</text>
-    <line class="arr" x1="300" y1="95" x2="396" y2="95"/>
-    <g transform="translate(348,78)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <text class="s m" x="348" y="125">docker push</text>
-    <rect class="box" x="720" y="60" width="190" height="90" rx="12"/>
-    <text class="t m" x="815" y="92">☸️ EKS deployment</text>
-    <text class="s m" x="815" y="114">image: ACCOUNT.dkr…/</text>
-    <text class="s m" x="815" y="134">hello-school:v3 → pulled</text>
-    <line class="arr" x1="640" y1="105" x2="716" y2="105"/>
-    <g transform="translate(678,88)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <rect class="soft" x="700" y="180" width="210" height="90" rx="12"/>
-    <text class="t m" x="805" y="210">🧹 lifecycle policy</text>
-    <text class="s m" x="805" y="233">"keep newest 10, expire rest"</text>
-    <text class="s m" x="805" y="253">(ecr/lifecycle-policy.json)</text>
-    <line class="arr dash" x1="700" y1="225" x2="619" y2="222"/>
-    <g transform="translate(660,205)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">Read full lesson 11 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;11&lt;/span&gt; 🧹 Push, pull &amp;amp; lifecycle — filing boxes and the janitor'><span class="ln">11</span> 🧹 Push, pull &amp; lifecycle — डबे लावणे आणि सफाई कामगार</h2>
+<p class="d" data-en="The tag IS the address; push files the box, EKS pulls it, the janitor keeps the locker tidy.">tag हाच पत्ता; push डबा लावतो, EKS तो घेतो, सफाई कामगार लॉकर नीट ठेवतो.</p>
+<svg aria-label="Tag the local image with the full ECR address, push it, the cluster pulls it, and a lifecycle policy expires old images" role="img" viewbox="0 0 940 300">
+<rect class="box" height="90" rx="12" width="260" x="40" y="50"></rect>
+<text class="t m" data-en="🏷️ address the box" x="170" y="80">🏷️ डब्याला पत्ता द्या</text>
+<text class="s m" x="170" y="102">docker tag hello-school:v1 \</text>
+<text class="s m" x="170" y="122">ACCOUNT.dkr…/hello-school:v1</text>
+<g transform="translate(40,50)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="200" rx="14" width="240" x="400" y="50"></rect>
+<text class="t m" data-en="🏦 ECR locker" x="520" y="82">🏦 ECR लॉकर</text>
+<rect class="soft" height="40" rx="8" width="190" x="425" y="100"></rect>
+<text class="s m" data-en="📦 v3 (newest)" x="520" y="125">📦 v3 (सर्वात नवा)</text>
+<rect class="soft" height="40" rx="8" width="190" x="425" y="150"></rect>
+<text class="s m" x="520" y="175">📦 v2</text>
+<rect class="dead" height="40" rx="8" width="190" x="425" y="200"></rect>
+<text class="s m" data-en="📦 v-old… expired 🧹" x="520" y="225">📦 v-old… कालबाह्य 🧹</text>
+<line class="arr" x1="300" x2="396" y1="95" y2="95"></line>
+<g transform="translate(348,78)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<text class="s m" x="348" y="125">docker push</text>
+<rect class="box" height="90" rx="12" width="190" x="720" y="60"></rect>
+<text class="t m" x="815" y="92">☸️ EKS deployment</text>
+<text class="s m" x="815" y="114">image: ACCOUNT.dkr…/</text>
+<text class="s m" data-en="hello-school:v3 → pulled" x="815" y="134">hello-school:v3 → pull केला</text>
+<line class="arr" x1="640" x2="716" y1="105" y2="105"></line>
+<g transform="translate(678,88)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<rect class="soft" height="90" rx="12" width="210" x="700" y="180"></rect>
+<text class="t m" x="805" y="210">🧹 lifecycle policy</text>
+<text class="s m" data-en='"keep newest 10, expire rest"' x="805" y="233">"नवे 10 ठेवा, बाकी कालबाह्य"</text>
+<text class="s m" x="805" y="253">(ecr/lifecycle-policy.json)</text>
+<line class="arr dash" x1="700" x2="619" y1="225" y2="222"></line>
+<g transform="translate(660,205)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md"&gt;Read full lesson 11 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-11-push-pull-lifecycle/lessons/11-push-pull-lifecycle/README.md">संपूर्ण धडा 11 वाचा →</a></p>
 </section>
-
 <!-- 12 -->
 <section class="dsec" id="l12" style="--c:#ea580c">
-  <h2><span class="ln">12</span> 📮 CI to cloud — the courier files the copies</h2>
-  <p class="d">In real life a robot does lessons 1–11 on every push — and hands the baton to the next two courses.</p>
-  <svg viewBox="0 0 940 300" role="img" aria-label="Dev pushes; CI tests, builds, tags with the commit SHA, pushes to ECR where images are scanned; Kubernetes deploys them; ArgoCD automates the deploys">
-    <rect class="box" x="30" y="100" width="150" height="90" rx="12"/>
-    <text class="t m" x="105" y="135">🧑‍💻 dev</text>
-    <text class="s m" x="105" y="157">git push</text>
-    <rect class="box" x="240" y="70" width="330" height="150" rx="14"/>
-    <text class="t m" x="405" y="102">📮 CI — the courier robot</text>
-    <text class="s m" x="405" y="130">✅ test → 🍱 build →</text>
-    <text class="s m" x="405" y="152">🏷️ tag = commit SHA →</text>
-    <text class="s m" x="405" y="174">🔑 12h pass → push</text>
-    <text class="s m" x="405" y="200">(the k8s course's CircleCI does exactly this)</text>
-    <line class="arr" x1="180" y1="145" x2="236" y2="145"/>
-    <g transform="translate(208,128)"><circle r="11" class="nc"/><text class="nt" dy="4">1</text></g>
-    <rect class="box" x="640" y="70" width="270" height="110" rx="14"/>
-    <text class="t m" x="775" y="102">🏦 ECR</text>
-    <text class="s m" x="775" y="126">🛡️ scan on push — every image</text>
-    <text class="s m" x="775" y="148">checked for known vulnerabilities</text>
-    <line class="arr" x1="570" y1="125" x2="636" y2="125"/>
-    <g transform="translate(603,108)"><circle r="11" class="nc"/><text class="nt" dy="4">2</text></g>
-    <rect class="soft" x="240" y="240" width="320" height="50" rx="10"/>
-    <text class="s m" x="400" y="262">☸️ next course: Kubernetes RUNS these</text>
-    <text class="s m" x="400" y="280">images across a cluster</text>
-    <rect class="soft" x="590" y="240" width="320" height="50" rx="10"/>
-    <text class="s m" x="750" y="262">🤖 then: ArgoCD DEPLOYS them from git,</text>
-    <text class="s m" x="750" y="280">automatically, forever</text>
-    <line class="arr dash" x1="700" y1="180" x2="440" y2="236"/>
-    <g transform="translate(570,215)"><circle r="11" class="nc"/><text class="nt" dy="4">3</text></g>
-    <line class="arr dash" x1="790" y1="180" x2="770" y2="236"/>
-    <g transform="translate(800,215)"><circle r="11" class="nc"/><text class="nt" dy="4">4</text></g>
-  </svg>
-  <p class="foot"><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">Read full lesson 12 →</a></p>
+<h2 data-en='&lt;span class="ln"&gt;12&lt;/span&gt; 📮 CI to cloud — the courier files the copies'><span class="ln">12</span> 📮 CI ते क्लाउड — कुरिअर प्रती लावतो</h2>
+<p class="d" data-en="In real life a robot does lessons 1–11 on every push — and hands the baton to the next two courses.">खऱ्या जगात एक रोबोट प्रत्येक push वर धडे 1–11 करतो — आणि पुढच्या दोन कोर्सकडे काठी सोपवतो.</p>
+<svg aria-label="Dev pushes; CI tests, builds, tags with the commit SHA, pushes to ECR where images are scanned; Kubernetes deploys them; ArgoCD automates the deploys" role="img" viewbox="0 0 940 300">
+<rect class="box" height="90" rx="12" width="150" x="30" y="100"></rect>
+<text class="t m" data-en="🧑‍💻 dev" x="105" y="135">🧑‍💻 डेव्हलपर</text>
+<text class="s m" x="105" y="157">git push</text>
+<rect class="box" height="150" rx="14" width="330" x="240" y="70"></rect>
+<text class="t m" data-en="📮 CI — the courier robot" x="405" y="102">📮 CI — कुरिअर रोबोट</text>
+<text class="s m" x="405" y="130">✅ test → 🍱 build →</text>
+<text class="s m" x="405" y="152">🏷️ tag = commit SHA →</text>
+<text class="s m" data-en="🔑 12h pass → push" x="405" y="174">🔑 12 तासांचा पास → push</text>
+<text class="s m" data-en="(the k8s course's CircleCI does exactly this)" x="405" y="200">(k8s कोर्सचे CircleCI नेमके हेच करते)</text>
+<line class="arr" x1="180" x2="236" y1="145" y2="145"></line>
+<g transform="translate(208,128)"><circle class="nc" r="11"></circle><text class="nt" dy="4">1</text></g>
+<rect class="box" height="110" rx="14" width="270" x="640" y="70"></rect>
+<text class="t m" x="775" y="102">🏦 ECR</text>
+<text class="s m" data-en="🛡️ scan on push — every image" x="775" y="126">🛡️ push वर scan — प्रत्येक इमेज</text>
+<text class="s m" data-en="checked for known vulnerabilities" x="775" y="148">ज्ञात vulnerabilities साठी तपासली</text>
+<line class="arr" x1="570" x2="636" y1="125" y2="125"></line>
+<g transform="translate(603,108)"><circle class="nc" r="11"></circle><text class="nt" dy="4">2</text></g>
+<rect class="soft" height="50" rx="10" width="320" x="240" y="240"></rect>
+<text class="s m" data-en="☸️ next course: Kubernetes RUNS these" x="400" y="262">☸️ पुढचा कोर्स: Kubernetes या इमेज</text>
+<text class="s m" data-en="images across a cluster" x="400" y="280">cluster वर चालवते</text>
+<rect class="soft" height="50" rx="10" width="320" x="590" y="240"></rect>
+<text class="s m" data-en="🤖 then: ArgoCD DEPLOYS them from git," x="750" y="262">🤖 मग: ArgoCD त्या git मधून deploy करते,</text>
+<text class="s m" data-en="automatically, forever" x="750" y="280">आपोआप, कायमचे</text>
+<line class="arr dash" x1="700" x2="440" y1="180" y2="236"></line>
+<g transform="translate(570,215)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
+<line class="arr dash" x1="790" x2="770" y1="180" y2="236"></line>
+<g transform="translate(800,215)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
+</svg>
+<p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md"&gt;Read full lesson 12 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-12-ci-to-cloud/lessons/12-ci-to-cloud/README.md">संपूर्ण धडा 12 वाचा →</a></p>
 </section>
-
-  <a class="btn" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">Start Lesson 01 →</a>
-  <a class="btn alt" href="lesson-diagrams.html">📐 All 12 lesson diagrams</a>
-  <a class="btn alt" href="quiz.html">🧪 Quiz</a>
-  <a class="btn alt" href="study-plan.html">🗓️ Study plan</a>
-  <a class="btn alt" href="before-and-tradeoffs.html">⏮️ Before &amp; trade-offs</a>
-  <a class="btn alt" href="https://baluraut.github.io/learn-kubernetes-school/">☸️ Next course: Kubernetes</a>
-
-  <footer>
+<a class="btn" data-en="Start Lesson 01 →" href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">धडा 01 सुरू करा →</a>
+<a class="btn alt" data-en="📐 All 12 lesson diagrams" href="lesson-diagrams.html">📐 सर्व 12 धड्यांच्या आकृत्या</a>
+<a class="btn alt" data-en="🧪 Quiz" href="quiz.html">🧪 प्रश्नमंजुषा</a>
+<a class="btn alt" data-en="🗓️ Study plan" href="study-plan.html">🗓️ अभ्यास योजना</a>
+<a class="btn alt" data-en="⏮️ Before &amp;amp; trade-offs" href="before-and-tradeoffs.html">⏮️ आधी काय होते &amp; फायदे-तोटे</a>
+<a class="btn alt" data-en="☸️ Next course: Kubernetes" href="https://baluraut.github.io/learn-kubernetes-school/">☸️ पुढचा कोर्स: Kubernetes</a>
+<footer data-en='
     Learn Docker School · pack it, ship it ·
-    <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a> ·
-    next: <a href="https://baluraut.github.io/learn-kubernetes-school/">learn-kubernetes-school</a> ·
-    <a href="https://baluraut.github.io/learn-argocd-school/">learn-argocd-school</a>
+    &lt;a href="https://github.com/BaluRaut/learn-docker-school"&gt;github.com/BaluRaut/learn-docker-school&lt;/a&gt; ·
+    next: &lt;a href="https://baluraut.github.io/learn-kubernetes-school/"&gt;learn-kubernetes-school&lt;/a&gt; ·
+    &lt;a href="https://baluraut.github.io/learn-argocd-school/"&gt;learn-argocd-school&lt;/a&gt;
    ·
-  <a href="https://baluraut.github.io/school/">🏫 all schools</a>
+  &lt;a href="https://baluraut.github.io/school/"&gt;🏫 all schools&lt;/a&gt;
  ·
-  <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 found a mistake?</a>
-</footer>
-
+  &lt;a href="https://github.com/BaluRaut/learn-docker-school/issues"&gt;🐛 found a mistake?&lt;/a&gt;
+'>Learn Docker School · पॅक करा, पाठवा · <a href="https://github.com/BaluRaut/learn-docker-school">github.com/BaluRaut/learn-docker-school</a> · पुढे: <a href="https://baluraut.github.io/learn-kubernetes-school/">learn-kubernetes-school</a> · <a href="https://baluraut.github.io/learn-argocd-school/">learn-argocd-school</a> · <a href="https://baluraut.github.io/school/">🏫 सर्व शाळा</a> · <a href="https://github.com/BaluRaut/learn-docker-school/issues">🐛 चूक सापडली?</a></footer>
 </div>
-</body>
+
+<script id="i18n-js">
+function schoolSetLang(l){
+  try{localStorage.setItem('school-lang',l)}catch(e){}
+  document.documentElement.setAttribute('lang',l);
+  document.querySelectorAll('[data-en]').forEach(function(el){
+    if(!el.hasAttribute('data-mr')) el.setAttribute('data-mr', el.innerHTML);
+    el.innerHTML = (l==='en') ? el.getAttribute('data-en') : el.getAttribute('data-mr');
+  });
+  document.querySelectorAll('[data-en-ph]').forEach(function(el){
+    if(!el.hasAttribute('data-mr-ph')) el.setAttribute('data-mr-ph', el.getAttribute('placeholder'));
+    el.setAttribute('placeholder', (l==='en') ? el.getAttribute('data-en-ph') : el.getAttribute('data-mr-ph'));
+  });
+  var p=document.getElementById('lang-pick'); if(p) p.value=l;
+}
+(function(){ var l='mr'; try{ l=localStorage.getItem('school-lang')||'mr'; }catch(e){}
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',function(){schoolSetLang(l)}); else schoolSetLang(l); })();
+</script></body>
 </html>
