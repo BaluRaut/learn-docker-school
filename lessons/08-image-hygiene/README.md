@@ -30,8 +30,10 @@ Four school rules for lunchboxes:
 3. **The box belongs to the kid, not the principal** 👤 — `USER node`. If a
    bully breaks into a root container, they're the principal of that box (and
    maybe the school). Break into a `node`-user box? They're… a kid at a desk.
-4. **Small boxes only** 🪶 — `node:20-alpine` (~180MB) over `node:20`
-   (~1.1GB). Less to pull, less to patch, less to attack. Pin versions:
+4. **Small boxes only** 🪶 — prefer `node:20-alpine` / `-slim` over the full
+   `node:20`. A smaller base image means less to pull, less to patch, and
+   potentially a smaller attack surface (check real sizes with `docker images`
+   — they change between releases). Pin versions:
    `FROM node:20-alpine`, never bare `FROM node`.
 
 ## 🗺️ Diagram
