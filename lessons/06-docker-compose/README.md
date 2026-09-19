@@ -60,6 +60,32 @@ flowchart LR
   readiness is what k8s probes solve properly (k8s course, lesson 07).
 - Daily verbs: `up --build`, `down`, `ps`, `logs -f web`, `exec web sh`.
 
+### 🧠 Compose describes a desired application topology
+
+```text
+compose.yml
+web
+ ├── depends_on → api
+ │                 └── db
+ └── network: app-net (everyone by name)
+```
+
+The five commands you'll type daily:
+
+```bash
+docker compose up -d      # create + start the whole table, detached
+docker compose ps         # who's up
+docker compose logs -f    # everyone's output, tailed
+docker compose exec web sh   # a shell inside one service
+docker compose down       # stop + remove (add -v to drop volumes)
+```
+
+> `depends_on` controls **start order** only. It does **not** mean the
+> dependency is ready to accept traffic — `db` may be "started" and still
+> initializing. For readiness use a `healthcheck` + `condition:
+> service_healthy`, or make the app retry. (Kubernetes solves the same
+> problem with readiness probes.)
+
 ## 🤔 Why
 
 Compose is where "my dev setup" becomes **a file in git** — reviewable,
@@ -80,6 +106,12 @@ docker compose ps                  # the table's seating chart
 docker compose logs -f web         # one box's diary (Ctrl+C)
 docker compose down                # table vanishes, nothing left behind
 ```
+
+### ⚠️ Common mistakes
+
+- `depends_on` = start order, not readiness — the app must retry or use healthchecks
+- exposing every service's port to the host — only the front door needs `ports:`
+- `docker compose down -v` in the wrong directory — it deletes that project's volumes
 
 ## ⏭️ Next
 
