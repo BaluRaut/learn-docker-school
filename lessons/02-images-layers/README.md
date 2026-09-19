@@ -76,6 +76,19 @@ Every image has three handles:
 | **tag** | `hello-school:v1`, `:latest` | **mutable** — a sticker someone can move |
 | **digest** | `sha256:9c1e…` (registry, content identity) | **immutable** — the fingerprint |
 
+The same thing as a picture — one repository, many handles:
+
+```text
+Repository  hello-school
+   ├── tag: v1
+   ├── tag: latest
+   └── digest: sha256:abc123...
+
+tag     = human-friendly name
+digest  = immutable content identifier
+latest  = just another mutable tag
+```
+
 Image content is immutable: change one byte, get a new ID/digest. `latest`
 is just the default tag name — it is neither "newest" nor stable. Tag vs
 digest returns with force in lessons 11 (ECR) and in Kubernetes deployments.
