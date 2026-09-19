@@ -7,7 +7,7 @@
 ## 📦 What's in this branch
 
 Lessons 01–02, **plus**: the **Dockerfile**, line by line. Seven instructions
-cover 95% of every real Dockerfile you'll ever read. Real file:
+cover most Dockerfiles you'll ever read. Real file:
 
 - [app/Dockerfile](../../app/Dockerfile) — heavily commented, this lesson's textbook
 
