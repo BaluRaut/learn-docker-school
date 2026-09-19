@@ -78,7 +78,7 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <!-- 01 -->
 <section class="dsec" id="l01" style="--c:#0ea5e9">
 <h2 data-en='&lt;span class="ln"&gt;1&lt;/span&gt; 🍱 Why containers — the end of "works on my machine"'><span class="ln">1</span> 🍱 कंटेनर का — "माझ्या मशीनवर चालते" चा शेवट</h2>
-<p class="d" data-en="Pack the app WITH everything it needs; every machine opens the identical box.">ॲप त्याला लागणाऱ्या सगळ्यासह पॅक करा; प्रत्येक मशीन तोच डबा उघडते.</p>
+<p class="d" data-en="Pack the app WITH everything it needs; the same image gives a consistent application environment on every machine.">ॲप त्याला लागणाऱ्या सगळ्यासह पॅक करा; तीच इमेज प्रत्येक मशीनवर सुसंगत application environment देते.</p>
 <svg aria-label="A naked app breaks on other machines; packed as a container it runs identically everywhere" role="img" viewbox="0 0 940 300">
 <rect class="dead" height="100" rx="12" width="260" x="40" y="50"></rect>
 <text class="t m" data-en="🧑‍💻 your laptop: works!" x="170" y="85">🧑‍💻 तुमचा लॅपटॉप: चालते!</text>
@@ -105,7 +105,7 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <line class="arr" x1="640" x2="716" y1="165" y2="160"></line>
 <line class="arr" x1="640" x2="716" y1="195" y2="240"></line>
 <g transform="translate(678,140)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
-<text class="s m" data-en="identical, everywhere" x="678" y="280">एकसारखे, सगळीकडे</text>
+<text class="s m" data-en="consistent, everywhere" x="678" y="280">सुसंगत, सगळीकडे</text>
 </svg>
 <p class="foot" data-en='&lt;a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md"&gt;Read full lesson 01 →&lt;/a&gt;'><a href="https://github.com/BaluRaut/learn-docker-school/blob/lesson-01-why-containers/lessons/01-why-containers/README.md">संपूर्ण धडा 01 वाचा →</a></p>
 </section>
@@ -148,7 +148,7 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <!-- 03 -->
 <section class="dsec" id="l03" style="--c:#0ea5e9">
 <h2 data-en='&lt;span class="ln"&gt;3&lt;/span&gt; 📝 The Dockerfile — reading the recipe card line by line'><span class="ln">3</span> 📝 Dockerfile — पाककृतीचे कार्ड ओळीने वाचणे</h2>
-<p class="d" data-en="Seven instructions cover 95% of real Dockerfiles — this repo's app uses them all.">सात सूचना 95% खऱ्या Dockerfiles व्यापतात — या रेपोचे ॲप त्या सगळ्या वापरते.</p>
+<p class="d" data-en="Eight instructions cover 95% of real Dockerfiles — RUN happens at build, CMD at start, and EXPOSE publishes nothing.">आठ सूचना 95% खऱ्या Dockerfiles व्यापतात — RUN build वेळी घडते, CMD सुरू होताना, आणि EXPOSE काहीही publish करत नाही.</p>
 <svg aria-label="Each Dockerfile instruction annotated: FROM base, WORKDIR, COPY code in, ENV defaults, EXPOSE docs, USER non-root, CMD on open" role="img" viewbox="0 0 940 330">
 <rect class="box" height="260" rx="14" width="340" x="50" y="40"></rect>
 <text class="t m" x="220" y="70">📝 app/Dockerfile</text>
@@ -393,7 +393,7 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <!-- 11 -->
 <section class="dsec" id="l11" style="--c:#ea580c">
 <h2 data-en='&lt;span class="ln"&gt;11&lt;/span&gt; 🧹 Push, pull &amp;amp; lifecycle — filing boxes and the janitor'><span class="ln">11</span> 🧹 Push, pull &amp; lifecycle — डबे लावणे आणि सफाई कामगार</h2>
-<p class="d" data-en="The tag IS the address; push files the box, EKS pulls it, the janitor keeps the locker tidy.">tag हाच पत्ता; push डबा लावतो, EKS तो घेतो, सफाई कामगार लॉकर नीट ठेवतो.</p>
+<p class="d" data-en="The tag is the address, the digest is the identity; push files the box, EKS pulls it, and a lifecycle policy YOU write keeps the locker tidy.">tag म्हणजे पत्ता, digest म्हणजे ओळख; push डबा लावतो, EKS तो घेतो, आणि तुम्ही लिहिलेली lifecycle policy लॉकर नीट ठेवते.</p>
 <svg aria-label="Tag the local image with the full ECR address, push it, the cluster pulls it, and a lifecycle policy expires old images" role="img" viewbox="0 0 940 300">
 <rect class="box" height="90" rx="12" width="260" x="40" y="50"></rect>
 <text class="t m" data-en="🏷️ address the box" x="170" y="80">🏷️ डब्याला पत्ता द्या</text>
@@ -419,7 +419,7 @@ html[lang="mr"] svg text{font-family:"Noto Sans Devanagari","Mukta","Devanagari 
 <g transform="translate(678,88)"><circle class="nc" r="11"></circle><text class="nt" dy="4">3</text></g>
 <rect class="soft" height="90" rx="12" width="210" x="700" y="180"></rect>
 <text class="t m" x="805" y="210">🧹 lifecycle policy</text>
-<text class="s m" data-en='"keep newest 10, expire rest"' x="805" y="233">"नवे 10 ठेवा, बाकी कालबाह्य"</text>
+<text class="s m" data-en='example: "keep newest 10"' x="805" y="233">उदाहरण: "नवे 10 ठेवा"</text>
 <text class="s m" x="805" y="253">(ecr/lifecycle-policy.json)</text>
 <line class="arr dash" x1="700" x2="619" y1="225" y2="222"></line>
 <g transform="translate(660,205)"><circle class="nc" r="11"></circle><text class="nt" dy="4">4</text></g>
