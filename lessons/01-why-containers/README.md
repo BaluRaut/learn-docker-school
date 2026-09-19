@@ -54,6 +54,20 @@ flowchart LR
 - **Docker** = the toolbox that builds, runs and ships containers. Not the
   only one, but the one everyone learns first.
 
+### 🧠 Container ≠ virtual machine
+
+```text
+VM          App → libraries → GUEST OS → hypervisor → host
+Container   App → libraries → container runtime → HOST kernel
+```
+
+A container packages the application and its **user-space** dependencies
+(libraries, runtime, config) — it normally **shares the host's kernel**.
+There is no "little operating system" inside the box; that's why it starts
+in milliseconds and weighs megabytes. Precisely: *the same image produces a
+consistent application environment across machines* — the kernel, CPU
+architecture and Docker version underneath can still differ.
+
 ## 🤔 Why
 
 Every tool in the trilogy stands on this: Kubernetes schedules *containers*,
@@ -82,6 +96,12 @@ curl localhost:3000         # 🍱 hello from <container-id>
 docker ps                   # your running box
 docker version              # client + engine
 ```
+
+### ⚠️ Common mistakes
+
+- thinking a container "contains an OS" — it contains user-space files and shares the host kernel
+- expecting a container to run anywhere regardless of CPU architecture (arm64 vs amd64 images differ)
+- treating a container like a VM you log into and hand-configure — rebuild the image instead
 
 ## ⏭️ Next
 
