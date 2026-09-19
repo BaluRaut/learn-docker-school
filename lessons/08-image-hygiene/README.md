@@ -2,6 +2,8 @@
 
 **📍 You are here:** Lesson **08** of 12 — end of Part 1! · Previous: `lesson-07-multi-stage` · Next: `lesson-09-registries`
 
+> 🔗 **AWS connection:** IAM & least privilege — a container is just another identity that should hold the minimum (AWS school, lessons 03 & 05).
+
 ---
 
 ## 📦 What's in this branch
@@ -61,6 +63,23 @@ flowchart TB
 - **Non-root by default**: the `node` images ship a ready `node` user; many
   images have equivalents, or add your own with `adduser`.
 
+### 🧠 This is the security lesson of Part 1
+
+The checklist that keeps an image from becoming an incident:
+
+- **`.dockerignore` everything private** — the build context is what `COPY` can see
+- **never copy `.env`, SSH keys, cloud credentials** — a secret in a layer is in the image forever, even if a later layer "deletes" it
+- **don't bake AWS credentials into images** — machines get roles (AWS school, lesson 05), never keys
+- **no secrets in `ARG`/`ENV`** — both end up in image metadata (`docker history` shows them)
+- **run as non-root** (`USER node`) — a break-in to root inside is a break-in to the host's user namespace
+- **pin and choose base images deliberately** — `node:20-alpine`, not `node`
+- **scan images** (ECR scan-on-push, lesson 11; `docker scout`) and **remove unneeded packages**
+
+```text
+❌  COPY . .                       → accidentally copies .env and .git
+✅  .dockerignore:  .env  .git  node_modules  *.pem  → COPY can't leak what it can't see
+```
+
 ## 🤔 Why
 
 Every rule here prevents a specific real incident: un-rollback-able deploys
@@ -86,6 +105,13 @@ docker tag hello-school:v1 hello-school:2026-09-09
 docker image ls hello-school               # 3 labels, ONE image (same ID) —
                                            # tags are stickers, not copies
 ```
+
+### ⚠️ Common mistakes
+
+- copying `.env` (or the whole repo) into the image — it's in a layer forever
+- baking secrets into `ARG`/`ENV` — they're readable with `docker history`
+- running production containers as root when nothing requires it
+- deploying `:latest` — you can't roll back to a moving tag
 
 ## ⏭️ Next — Part 2 begins ☁️
 
