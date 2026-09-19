@@ -61,6 +61,23 @@ flowchart LR
   (e.g. always keep `release-*`). JSON in git → applied by
   [ecr/ecr.tf](../../ecr/ecr.tf) — the janitor's contract is code-reviewed.
 
+### 🧠 Tag vs digest — and an *example* lifecycle policy
+
+```text
+tag     =  human-friendly name        my-app:v42        (mutable — can be re-pointed)
+digest  =  content identity           sha256:abc123…    (immutable — the exact bytes)
+
+my-app:v42  ──resolves today to──▶  sha256:abc123…
+```
+
+Production deployments often pin the **digest** (or use immutable tags)
+because a tag can be moved to different content after you tested it; a
+digest cannot. Kubernetes accepts `image: repo@sha256:…` for exactly this.
+
+ECR has **no default janitor**. A lifecycle policy is something *you* write —
+for example: *"keep the newest 10 tagged images; expire untagged images
+after 7 days."* Pick numbers that match your rollback needs.
+
 ## 🤔 Why
 
 This lesson IS the deploy path: everything Part 1 built becomes *available to
@@ -91,6 +108,12 @@ docker push "$REPO:v1" 2>&1 | tail -1        # ❌ "tag invalid: The image tag '
 # 4) read the janitor's contract:
 aws ecr get-lifecycle-policy --repository-name hello-school --query lifecyclePolicyText --output text
 ```
+
+### ⚠️ Common mistakes
+
+- treating a tag as a guarantee — only a digest identifies exact content
+- assuming ECR cleans up by itself — write the lifecycle policy (and read the bill)
+- an aggressive policy that expires the image production is *currently running* on
 
 ## ⏭️ Next
 

@@ -49,6 +49,26 @@ flowchart LR
 - `docker ps` (running), `ps -a` (also exited), `logs -f` (follow the diary),
   `exec -it NAME sh` (shell inside), `stop` (SIGTERM, 10s grace, then KILL).
 
+### 🧠 The container lifecycle
+
+```text
+docker create  →  created
+docker start   →  running
+docker stop    →  stopped   (process gone, filesystem kept)
+docker rm      →  removed   (container gone)
+```
+
+Three verbs beginners mix up:
+
+```text
+docker stop  = stop the process        (container still exists)
+docker rm    = remove the container    (its writable layer is gone)
+docker rmi   = remove the IMAGE        (the template, from your machine)
+```
+
+`docker run` = create + start in one go. `docker ps -a` shows the stopped
+ones you forgot; `docker system df` shows what all of it costs on disk.
+
 ## 🤔 Why
 
 These verbs ARE your debugging toolkit for everything later: a crashing pod in
@@ -80,6 +100,12 @@ docker stop lunch                         # watch the diary say "bye 👋" (SIGT
 docker rm lunch                           # throw the box away
 docker run --rm -p 3000:3000 hello-school:v1   # visits: 1 again — new box, fresh memory
 ```
+
+### ⚠️ Common mistakes
+
+- `docker stop` ≠ `docker rm` ≠ `docker rmi` — process, container, image
+- forgetting `-p` and wondering why `localhost:3000` is silent
+- running with `-d` and never reading `docker logs` — the container "did nothing" because it crashed
 
 ## ⏭️ Next
 

@@ -60,6 +60,26 @@ flowchart LR
 - **Container** = a thin *writable* layer on top of the frozen stack — that's
   why 100 containers from one image are cheap.
 
+### 🧠 Image vs container — and the three names of an image
+
+```text
+IMAGE      = read-only template (the layer cake, frozen)
+                 ↓ docker run
+CONTAINER  = a running instance of that image (+ a thin writable layer)
+```
+
+Every image has three handles:
+
+| handle | example | changes? |
+|---|---|---|
+| **image ID** | `sha256:3f2a…` (local, content-based) | never for the same content |
+| **tag** | `hello-school:v1`, `:latest` | **mutable** — a sticker someone can move |
+| **digest** | `sha256:9c1e…` (registry, content identity) | **immutable** — the fingerprint |
+
+Image content is immutable: change one byte, get a new ID/digest. `latest`
+is just the default tag name — it is neither "newest" nor stable. Tag vs
+digest returns with force in lessons 11 (ECR) and in Kubernetes deployments.
+
 ## 🤔 Why
 
 Cache-friendly Dockerfiles are the difference between 2-second and 5-minute
@@ -87,6 +107,12 @@ git checkout app/server.js               # undo the tweak
 docker history hello-school:v1           # 🎂 the actual layers + sizes
 docker image ls | head -3                # images on your shelf
 ```
+
+### ⚠️ Common mistakes
+
+- believing `:latest` means "the newest build" — it's a tag like any other, and it moves
+- editing files inside a running container and expecting the image to change (it doesn't)
+- rebuilding without cache discipline — code-copy lines above dependency lines = slow builds
 
 ## ⏭️ Next
 
