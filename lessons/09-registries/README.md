@@ -60,6 +60,30 @@ flowchart LR
   content fingerprints (immutable). CI systems and careful deploys pin
   digests; humans read tags.
 
+### 🧠 The hierarchy — registry ≠ repository
+
+```text
+Registry        (the warehouse — one host)
+   ↓
+Repository      (one shelf — one application)
+   ↓
+Image           (one box — one build)
+   ↓
+Tag / Digest    (the sticker / the fingerprint)
+```
+
+```text
+123456789012.dkr.ecr.ap-south-1.amazonaws.com/    ← registry
+    my-app                                         ← repository
+       ├── v1.0.0                                  ← tags
+       ├── v1.1.0
+       └── latest    (a sticker — it moves)
+```
+
+A **registry** is the service; a **repository** is one app's shelf inside it.
+"Create a repository" in ECR means adding a shelf to the warehouse you
+already have.
+
 ## 🤔 Why
 
 The registry is the **handoff point of the entire trilogy**: this course
@@ -87,6 +111,12 @@ docker rmi localhost:5000/hello-school:v1
 docker pull localhost:5000/hello-school:v1                    # collect — full circle 🎉
 docker rm -f warehouse
 ```
+
+### ⚠️ Common mistakes
+
+- calling the repository "the registry" (and vice versa) — one shelf vs the whole warehouse
+- pushing to Docker Hub's public namespace by accident — check the full image name
+- assuming a pull is free — cross-region and cross-cloud pulls bill egress
 
 ## ⏭️ Next
 

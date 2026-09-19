@@ -2,6 +2,8 @@
 
 **📍 You are here:** Lesson **10** of 12 · Previous: `lesson-09-registries` · Next: `lesson-11-push-pull-lifecycle`
 
+> 🔗 **AWS connection:** IAM → ECR. ECR authentication is an IAM problem — the AWS school's lesson 05 (machine identities) is the other half of this lesson.
+
 ---
 
 ## 📦 What's in this branch
@@ -59,6 +61,34 @@ flowchart LR
 - **Cost**: storage ~$0.10/GB-month, private repos themselves free. With
   lesson 07's small images + lesson 11's janitor: pennies.
 
+### 🧠 The authentication flow, made explicit
+
+```text
+Developer
+   ↓  AWS IAM credentials (SSO / CLI profile / role)
+ECR authentication  (aws ecr get-login-password → a 12-hour token)
+   ↓
+Docker credential / token  (docker login)
+   ↓
+docker push
+   ↓
+ECR repository
+```
+
+> **ECR authentication is an IAM problem.** Docker only carries the token;
+> *whether you may push or pull at all* is decided by IAM policies.
+
+Three kinds of "who":
+
+```text
+Human developer   → AWS CLI / SSO credentials  → temporary ECR token
+CI pipeline       → OIDC → assumes an IAM role → temporary ECR token   (no stored keys)
+EKS nodes         → node/instance role → pull permission             (no login step at all)
+```
+
+That is the AWS → Docker → Kubernetes relationship in one table: identity
+comes from AWS, the artifact from Docker, the pull from Kubernetes.
+
 ## 🤔 Why
 
 Private images need a private, IAM-guarded, region-local warehouse — and EKS
@@ -87,6 +117,13 @@ aws ecr get-login-password --region ap-south-1 \
   | docker login --username AWS --password-stdin \
     123456789012.dkr.ecr.ap-south-1.amazonaws.com     # "Login Succeeded"
 ```
+
+### ⚠️ Common mistakes
+
+- ECR authentication ≠ Docker Hub login — no username/password, a 12-hour IAM-issued token
+- IAM permissions (`ecr:*` actions) control access; the token alone opens nothing
+- permanent access keys in CI settings — use OIDC → role (AWS school, lesson 05)
+- the token expired — "no basic auth credentials" after 12 hours is normal, log in again
 
 ## ⏭️ Next
 
