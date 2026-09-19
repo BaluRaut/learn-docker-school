@@ -63,6 +63,22 @@ flowchart TB
 - **Build time vs run time** is THE mental split: `RUN` happens once at build;
   `CMD`/`ENV` matter every time a container starts.
 
+### 🧠 The instruction table (eight you will meet immediately)
+
+| Instruction | Purpose | When it runs |
+|---|---|---|
+| `FROM` | base image | build |
+| `WORKDIR` | working directory for later steps | build |
+| `COPY` | copy files from the build context | build |
+| `RUN` | execute a command (install, compile) | **build** |
+| `ENV` | environment defaults | build → visible at run |
+| `EXPOSE` | *documents* the container port | (metadata only) |
+| `USER` | user the process runs as | run |
+| `CMD` | default command | **run** (container start) |
+
+> **`EXPOSE` does not publish a port.** Only `-p host:container` (lesson 04)
+> opens a door. `EXPOSE` is a label on the box.
+
 ## 🤔 Why
 
 The Dockerfile is executable documentation: anyone can rebuild your exact
@@ -91,6 +107,13 @@ curl localhost:3000                           # version: recipe-test
 # inspect the metadata your Dockerfile wrote:
 docker inspect hello-school:v1 --format '{{.Config.User}} {{.Config.Env}} {{.Config.Cmd}}'
 ```
+
+### ⚠️ Common mistakes
+
+- `EXPOSE` does not publish a port — `-p` does
+- `RUN` happens at **build** time; `CMD` happens when the container **starts**
+- unpinned `FROM node` — a different base tomorrow, a different bug tomorrow
+- `COPY . .` before `.dockerignore` exists (lesson 08)
 
 ## ⏭️ Next
 

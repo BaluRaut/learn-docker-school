@@ -59,6 +59,21 @@ flowchart LR
 - Bonus: less software in the final image = fewer CVEs for lesson 12's ECR
   scanner to complain about. Small is safe.
 
+### 🧠 Two stages, one artifact
+
+```text
+BUILD STAGE     Node + npm + source + compiler
+                          ↓  build
+                     build artifact
+                          ↓  COPY --from=build
+RUNTIME STAGE   minimal runtime + artifact       ← THIS ships
+```
+
+Build dependencies stay in the build stage and never need to exist in the
+final image. The production chain of consequences:
+
+**smaller image → faster pull → smaller attack surface → less storage & transfer**
+
 ## 🤔 Why
 
 Image size is a tax you pay on **every** push (lesson 11), every pull, every
@@ -85,6 +100,12 @@ docker image ls | grep -E "hello-school|node|nginx"   # compare sizes
 docker run --rm hello-school:static node --version 2>&1 | tail -1
 # → "node: not found" — the kitchen truly did not ship 👨‍🍳🚫
 ```
+
+### ⚠️ Common mistakes
+
+- copying the whole build stage into the runtime stage (defeats the point)
+- a runtime base that still contains compilers/package managers — pick `-alpine`/`-slim`/distroless
+- forgetting `--cache-from` in CI, then wondering why multi-stage builds got slow
 
 ## ⏭️ Next
 
