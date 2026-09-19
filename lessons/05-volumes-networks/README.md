@@ -59,6 +59,30 @@ flowchart LR
   via Docker's built-in DNS. The default `bridge` network notably does NOT
   do name resolution — always make a named network.
 
+### 🧠 Three places data can live
+
+```text
+Container writable layer  → disposable; dies with docker rm
+Named volume              → Docker-managed, persistent (survives rm)
+Bind mount                → host directory ↔ container (live editing)
+```
+
+> Removing a container does **not** remove a named volume — only
+> `docker volume rm` (or `docker compose down -v`) does.
+
+Networking, in one picture:
+
+```text
+web  →  db:5432
+          ↑
+      Docker DNS  (the container NAME resolves to its current IP)
+```
+
+Never use a container's IP as a stable identity — it changes on every
+restart; the name doesn't. Compose service names (lesson 06) are an
+excellent stepping stone toward **Kubernetes Services**, which are the
+same idea with a stable IP and DNS name in front of moving pods.
+
 ## 🤔 Why
 
 Volumes split the world into *disposable* (containers) and *precious* (data) —
@@ -86,6 +110,12 @@ docker run --rm -v fridge:/data alpine cat /data/note.txt        # different box
 # --- cleanup ---
 docker rm -f web && docker network rm lunchnet && docker volume rm fridge
 ```
+
+### ⚠️ Common mistakes
+
+- the container filesystem is disposable — data you care about goes in a volume
+- volume ≠ bind mount: one is Docker-managed, the other is your folder
+- using container IPs as stable addresses — use names, Docker DNS resolves them
 
 ## ⏭️ Next
 
