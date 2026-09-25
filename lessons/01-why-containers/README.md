@@ -34,12 +34,12 @@ milliseconds and weighs megabytes, not gigabytes.
 
 ```mermaid
 flowchart LR
-    naked["😤 naked app<br/>works here, crashes there"]
+    loose["😤 unpacked app<br/>works here, crashes there"]
     box["🍱 container<br/>app + runtime + libs + config<br/>ALL inside the box"]
     a["💻 laptop A ✅"]
     b["💻 laptop B ✅"]
     c["☁️ AWS server ✅"]
-    naked -->|"1 pack everything"| box
+    loose -->|"1 pack everything"| box
     box -->|"2 identical"| a
     box -->|"2 identical"| b
     box -->|"2 identical"| c
